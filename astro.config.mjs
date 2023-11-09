@@ -13,19 +13,23 @@ export default defineConfig({
   vite: {
     server: {
       watch: {
-        ignored: "**/.idea/**"
-      }
-    }
+        ignored: "**/.idea/**",
+      },
+    },
   },
   markdown: {
     remarkPlugins: [remarkReadingTime],
-    rehypePlugins: []
+    rehypePlugins: [],
   },
   output: "server",
   adapter: netlify({
-    edgeMiddleware: true
+    edgeMiddleware: true,
   }),
-  integrations: [tailwind({
-    applyBaseStyles: false
-  }), sitemap(), react()]
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    sitemap(),
+    react(),
+  ],
 });
