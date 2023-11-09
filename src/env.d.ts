@@ -3,5 +3,7 @@
 declare namespace App {
   interface Locals {
     title: string;
+    visitorCountry: string,
+    hasEdgeMiddleware: boolean,
   }
 }
