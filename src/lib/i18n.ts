@@ -15,7 +15,7 @@ export const languages = {
 export const DEFAULT_LOCALE = 'en'
 export const rtlLanguages = ['fa']
 
-export const getLocales = () => Object.keys(languages) as string[] | Languages[]
+export const getLocales = () : string[] => Object.keys(languages)
 
 export function isRtl(locale: Languages | string) : boolean {
   return rtlLanguages.includes(locale)
