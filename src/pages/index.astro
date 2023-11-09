@@ -1,7 +1,7 @@
 ---
 import {Debug} from "astro:components";
 
-// const {} = Astro.params
+const {title} = Astro.locals
 ---
 
 <html lang="en">
@@ -13,7 +13,6 @@ import {Debug} from "astro:components";
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
-		<!--<Debug {title} />-->
+		<h1>Astro --- {title}</h1>
 	</body>
 </html>
