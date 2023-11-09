@@ -1,0 +1,25 @@
+---
+import {SITE} from "../../config";
+import ToggleTheme from "./ToggleTheme.astro";
+import ModeToggle from "../react/ModeToggle";
+
+export interface Props {
+  activeNav?: "posts" | "search"
+}
+
+const {activeNav} = Astro.props
+
+---
+
+<header>
+    <div>
+
+    <div>
+        <a href="">{SITE.title}</a>
+    </div>
+
+        <nav>
+<ModeToggle />
+        </nav>
+    </div>
+</header>

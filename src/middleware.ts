@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
-import {DEFAULT_LOCALE, getLocaleFromUrl} from "./lib/i18n.ts";
+import {DEFAULT_LOCALE, getLocaleFromUrl, getLocales} from "./lib/i18n.ts";
 
 // `context` and `next` are automatically typed
 export const onRequest = defineMiddleware(({request, locals}, next) => {
@@ -9,6 +9,12 @@ export const onRequest = defineMiddleware(({request, locals}, next) => {
 
   if (url.pathname === '/') {
     url.pathname = `/${DEFAULT_LOCALE}/`
+    return Response.redirect(url)
+  }
+
+  const [, loc] = url.pathname.split('/')
+  if (!getLocales()?.includes(loc)) {
+    url.pathname = `/${DEFAULT_LOCALE}${url.pathname}/`
     return Response.redirect(url)
   }
 

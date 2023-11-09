@@ -1,19 +1,26 @@
 ---
-import {Debug} from "astro:components";
+// export const prerender = true;
 
+import {Debug} from "astro:components";
+import {getLocales} from "@lib/i18n";
+import Layout from "@layouts/Layout.astro";
+import ToggleTheme from "../../components/common/ToggleTheme.astro";
+
+const { resource, id } = Astro.params;
 const {locale} = Astro.locals
+
+if (!getLocales().includes(locale)) Astro.redirect("/404")
+
+// export function getStaticPaths() {
+//
+// 	const paths = getLocales()?.map(locale => ({
+// 		params: {slug: locale}
+// 	}))
+//
+// 	return paths
+// }
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro /- {locale} =\</h1>
-	</body>
-</html>
+<Layout>
+</Layout>
