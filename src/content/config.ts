@@ -1,4 +1,4 @@
-import { SITE } from "config.ts";
+import { SITE } from "../config.ts";
 import {defineCollection, reference, z} from "astro:content";
 
 const blog = defineCollection({
