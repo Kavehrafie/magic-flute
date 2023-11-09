@@ -1,10 +1,10 @@
 import { defineMiddleware } from "astro:middleware";
 
 // `context` and `next` are automatically typed
-export const onRequest = defineMiddleware(({request}, next) => {
-
+export const onRequest = defineMiddleware(({request, locals}, next) => {
   const url = new URL(request.url);
-  console.log(url)
+
+  locals.title = 'fgaadnankasn'
   if (url.pathname === '/admin') {
     url.pathname = '/'
     return Response.redirect(url)
