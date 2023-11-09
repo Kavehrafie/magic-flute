@@ -1,7 +1,8 @@
 ---
 import {Debug} from "astro:components";
 
-const {title, visitorCountry} = Astro.locals
+const {locale} = Astro.locals
+
 ---
 
 <html lang="en">
@@ -13,7 +14,7 @@ const {title, visitorCountry} = Astro.locals
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1>Astro /- {title} =\</h1>
-		<p>{visitorCountry}</p>
+	<Debug {Astro.params} />
+		<h1>Astro /- {locale} =\</h1>
 	</body>
 </html>
