@@ -12,11 +12,11 @@ export const onRequest = defineMiddleware(({request, locals}, next) => {
     return Response.redirect(url)
   }
 
-  const [, loc] = url.pathname.split('/')
-  if (!getLocales()?.includes(loc)) {
-    url.pathname = `/${DEFAULT_LOCALE}${url.pathname}/`
-    return Response.redirect(url)
-  }
+  // const [, loc] = url.pathname.split('/')
+  // if (!getLocales()?.includes(loc)) {
+  //   url.pathname = `/${DEFAULT_LOCALE}${url.pathname}/`
+  //   return Response.redirect(url)
+  // }
 
   return next();
 });
