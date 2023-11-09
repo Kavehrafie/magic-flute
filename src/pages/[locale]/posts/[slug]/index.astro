@@ -1,6 +1,7 @@
 ---
 import {getEntry} from "astro:content";
 import Layout from "@layouts/Layout.astro";
+import { Debug } from "astro:components";
 
 
 
@@ -8,8 +9,10 @@ const {locale} = Astro.locals
 const {slug} = Astro.params
 
 //
-const post = await getEntry('blog', slug);
+// const post = await getEntry('blog', slug);
 //
+const posts = await Astro.glob(`/src/content/**/*.md`);
+console.log(posts);
 // if (!post) Astro.redirect('/404')
 //
 // const {Content, headings, remarkPluginFrontmatter } = await post.render()
@@ -18,5 +21,6 @@ const post = await getEntry('blog', slug);
 
 <Layout>
   {slug} --- {locale}
+  <p>{posts[0].frontmatter.title}</p>
 <!--<Content />-->
 </Layout>
