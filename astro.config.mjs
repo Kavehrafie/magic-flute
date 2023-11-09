@@ -1,10 +1,8 @@
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel/serverless";
 import netlify from "@astrojs/netlify/functions";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
-import alpinejs from "@astrojs/alpinejs";
 
 import react from "@astrojs/react";
 
@@ -26,10 +24,10 @@ export default defineConfig({
     edgeMiddleware: true,
   }),
   integrations: [
+    react(),
     tailwind({
       applyBaseStyles: false,
     }),
     sitemap(),
-    react(),
   ],
 });

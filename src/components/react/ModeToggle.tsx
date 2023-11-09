@@ -22,10 +22,13 @@ export default function ModeToggle() {
 
     <>
 
-      <p> ---{theme}---</p>
+      <p className="text-xl py-5"> ---{theme}---</p>
 
-    <button type='button' onClick={() => console.log('ss')}>dark</button>
-    <button type='button' className='px-4 py-2 bg-amber-200' onClick={() => setThemeState("dark")}>light</button>
+      <div className="flex gap-x-4">
+
+    <button type='button' onClick={() => setThemeState("dark")}>dark</button>
+    <button type='button' className='dark:bg-amber-700 rounded-md px-4 py-2 bg-amber-200' onClick={() => setThemeState("theme-light")}>light</button>
+      </div>
     </>
     // <DropdownMenu>
     //   <DropdownMenuTrigger asChild>
