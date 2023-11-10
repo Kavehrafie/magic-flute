@@ -2,17 +2,26 @@
 import {getEntry} from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import { Debug } from "astro:components";
+import { CollectionConfig } from "astro/dist/content/utils";
+import getSortedPosts from "../../../../utils/getSortedPosts";
 
-
+import { getEntry } from "astro:content"
 
 const {locale} = Astro.locals
 const {slug} = Astro.params
 
 //
 // const post = await getEntry('blog', slug);
+
 //
-const posts = await Astro.glob(`/src/content/**/*.md`);
-console.log(posts);
+
+const posts = getEntry('blog', slug)
+// const posts = await Astro.glob(`/src/content/blog/**/*.md`);
+
+// const sortedPosts = getSortedPosts(posts, locale)
+
+
+// const {Content, url, file} = posts[0]
 // if (!post) Astro.redirect('/404')
 //
 // const {Content, headings, remarkPluginFrontmatter } = await post.render()
@@ -20,7 +29,7 @@ console.log(posts);
 ---
 
 <Layout>
-  {slug} --- {locale}
-  <p>{posts[0].frontmatter.title}</p>
+  {slug} --- {locale} --- {file}
+
 <!--<Content />-->
 </Layout>

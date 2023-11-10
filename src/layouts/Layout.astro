@@ -6,21 +6,6 @@ import Header from "../components/common/Header.astro";
 const {locale} = Astro.locals
 const dir = isRtl(locale) ? 'rtl' : 'ltr'
 ---
-
-<html lang={locale} dir={dir}>
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator}/>
-    <title>Astro</title>
-
-</head>
-<body>
-<Header/>
-<slot/>
-
-
 <script is:inline>
     const getThemePreference = () => {
         if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
@@ -45,5 +30,21 @@ const dir = isRtl(locale) ? 'rtl' : 'ltr'
     }
 
 </script>
+
+<html lang={locale} dir={dir}>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator}/>
+    <title>Astro</title>
+
+</head>
+<body class="dark:bg-amber-200">
+<Header/>
+<slot/>
+
+
+
 </body>
 </html>

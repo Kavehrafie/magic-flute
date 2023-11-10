@@ -12,6 +12,7 @@ const blog = defineCollection({
         width: z.number(),
         height: z.number()
       }).optional(),
+      locale: z.string().regex(/^[a-z]{2}$/),
       pubDatetime: z.date(),
       title: z.string(),
       subtitle: z.string().optional(),

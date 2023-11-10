@@ -10,6 +10,7 @@ featuredImage:
   width: 716
   height: 1309
 draft: false
+locale: fa
 tags:
   - war and peace
   - paul rubens

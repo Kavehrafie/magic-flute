@@ -22,7 +22,6 @@ export default function ModeToggle() {
 
     <>
 
-      <p className="text-xl py-5"> ---{theme}---</p>
 
       <div className="flex gap-x-4">
 
