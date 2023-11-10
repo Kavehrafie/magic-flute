@@ -1,11 +1,10 @@
 ---
 import {getEntry} from "astro:content";
 import Layout from "@layouts/Layout.astro";
-import { Debug } from "astro:components";
-import { CollectionConfig } from "astro/dist/content/utils";
-import getSortedPosts from "../../../../utils/getSortedPosts";
+// import { Debug } from "astro:components";
+import getSortedPosts from "@utils/getSortedPosts";
 
-import { getEntry } from "astro:content"
+// import { getEntry } from "astro:content"
 
 const {locale} = Astro.locals
 const {slug} = Astro.params
@@ -15,7 +14,7 @@ const {slug} = Astro.params
 
 //
 
-const posts = getEntry('blog', slug)
+// const posts = getEntry('blog', slug)
 // const posts = await Astro.glob(`/src/content/blog/**/*.md`);
 
 // const sortedPosts = getSortedPosts(posts, locale)
