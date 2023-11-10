@@ -3,3 +3,7 @@
   command = "astro build"
   functions = "netlify/functions"
   publish = "dist"
+
+[dev]
+  command = "astro dev"
+  targetPort = 4321
