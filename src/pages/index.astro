@@ -1,6 +1,4 @@
 ---
 import { DEFAULT_LOCALE } from "@lib/i18n";
-const {visitorCountry, locale} = Astro.locals
-// return Astro.redirect(`/${DEFAULT_LOCALE}/`)
+return Astro.redirect(`/${DEFAULT_LOCALE}/`)
 ---
-{visitorCountry} - {locale}

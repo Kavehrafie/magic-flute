@@ -6,7 +6,8 @@ import {getLocales} from "@lib/i18n";
 import Layout from "@layouts/Layout.astro";
 
 // const { resource, id } = Astro.params;
-const {locale} = Astro.locals
+const {visitorCountry, locale} = Astro.locals
+
 const locales = getLocales()
 // if (!locales.includes(locale)) Astro.redirect("/404")
 
@@ -25,7 +26,7 @@ export function getStaticPaths() {
 <Layout>
   <a href="/en/posts/fnakfnakj">fmalnfakjfb</a>
   <p class="text-2xl text-red-500">
-    {locale}
+    {locale} -- {visitorCountry}
   </p>
 
 </Layout>
