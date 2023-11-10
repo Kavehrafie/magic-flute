@@ -1,4 +1,6 @@
 ---
+export const prerender = true
+
 import {getEntry} from "astro:content";
 import Layout from "@layouts/Layout.astro";
 // import { Debug } from "astro:components";
@@ -7,7 +9,7 @@ import Layout from "@layouts/Layout.astro";
 
 // import { getEntry } from "astro:content"
 
-const {locale} = Astro.locals
+// const {locale} = Astro.locals
 const {slug} = Astro.params
 
 // const post = await getPost(`../content/blog/${locale}/adding-new-post.md`)
@@ -28,10 +30,15 @@ const {slug} = Astro.params
 //
 // const {Content, headings, remarkPluginFrontmatter } = await post.render()
 
+export function getStaticPaths() {
+  return [{
+    params: {slug: 'this', locale: 'en'}
+  }]
+}
 ---
 
 <Layout>
-  {slug} --- {locale}
+  <!--{slug} -&#45;&#45; {locale}-->
 <!--<Debug {post} />-->
 <!--<Content />-->
 </Layout>
