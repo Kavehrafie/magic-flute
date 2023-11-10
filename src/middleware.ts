@@ -5,7 +5,7 @@ import {DEFAULT_LOCALE, getLocaleFromUrl, getLocales} from "./lib/i18n.ts";
 export const onRequest = defineMiddleware(({request, locals}, next) => {
   const url = new URL(request.url);
 
-  locals.locale = getLocaleFromUrl(url)
+  // locals.locale = getLocaleFromUrl(url)
 
   if (url.pathname === '/') {
     url.pathname = `/${DEFAULT_LOCALE}/`
