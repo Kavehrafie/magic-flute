@@ -4,7 +4,7 @@
 
 declare namespace App {
   interface Locals {
-    locale: string | undefined;
+    locale: string;
     visitorCountry: string;
     hasEdgeMiddleware: boolean;
   }
