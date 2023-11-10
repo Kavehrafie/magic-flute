@@ -19,7 +19,7 @@ export default defineConfig({
     remarkPlugins: [remarkReadingTime],
     rehypePlugins: [],
   },
-  output: "server",
+  output: "hybrid",
   adapter: netlify({
     edgeMiddleware: true,
   }),

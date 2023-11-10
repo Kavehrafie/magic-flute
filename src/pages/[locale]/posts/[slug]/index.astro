@@ -2,13 +2,16 @@
 import {getEntry} from "astro:content";
 import Layout from "@layouts/Layout.astro";
 // import { Debug } from "astro:components";
-import getSortedPosts from "@utils/getSortedPosts";
+// import getSortedPosts from "@utils/getSortedPosts";
+// import { getPost } from "../../../../utils/getPosts";
 
 // import { getEntry } from "astro:content"
 
 const {locale} = Astro.locals
 const {slug} = Astro.params
 
+// const post = await getPost(`../content/blog/${locale}/adding-new-post.md`)
+// const post2 = getEntry('blog', slug)
 //
 // const post = await getEntry('blog', slug);
 
@@ -29,6 +32,6 @@ const {slug} = Astro.params
 
 <Layout>
   {slug} --- {locale}
-
+<!--<Debug {post} />-->
 <!--<Content />-->
 </Layout>
