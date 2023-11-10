@@ -7,10 +7,10 @@ export const onRequest = defineMiddleware(({request, locals}, next) => {
 
   // locals.locale = getLocaleFromUrl(url)
 
-  if (url.pathname === '/') {
-    url.pathname = `/${DEFAULT_LOCALE}/`
-    return Response.redirect(url)
-  }
+  // if (url.pathname === '/') {
+  //   url.pathname = `/${DEFAULT_LOCALE}/`
+  //   return Response.redirect(url)
+  // }
 
   // const [, loc] = url.pathname.split('/')
   // if (!getLocales()?.includes(loc)) {
