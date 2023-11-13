@@ -12,6 +12,15 @@ export const languages = {
   }
 }
 
+export const ui = {
+  fa: {
+    'nav.posts': 'بلاگ'
+  },
+  en: {
+    'nav.posts': 'Posts'
+  }
+}
+
 export const DEFAULT_LOCALE = 'en'
 export const rtlLanguages = ['fa']
 
@@ -25,4 +34,12 @@ export function getLocaleFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
   if (lang in languages) return lang as Languages;
   return DEFAULT_LOCALE;
+}
+
+
+export function useTranslations(lang: keyof typeof ui) {
+  return function t(key: keyof typeof ui[typeof DEFAULT_LOCALE]) {
+  console.log('>>>', ui[lang][key]);
+    return ui[lang][key] || ui[DEFAULT_LOCALE][key];
+  }
 }

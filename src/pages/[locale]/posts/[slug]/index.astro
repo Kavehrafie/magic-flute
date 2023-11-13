@@ -8,6 +8,8 @@ import { Image } from "astro:assets";
 import { getLocales } from "@lib/i18n";
 import Layout from "@layouts/Layout.astro";
 import { Debug } from "astro:components";
+import { listIcons } from "@iconify/react";
+import { head } from "lodash-es";
 // import getSortedPosts from "@utils/getSortedPosts";
 // import { getPost } from "../../../../utils/getPosts";
 
@@ -47,26 +49,45 @@ export async function getStaticPaths() {
             ? locale
             : DEFAULT_LOCALE,
       },
-      props: { post }
+      props: { post },
     };
   });
-
 }
 
-const {locale} = Astro.params
-const { post } = Astro.props
-const {Content ,headings} = await post.render()
-
+const { locale } = Astro.params;
+const { post } = Astro.props;
+const { Content, headings, remarkPluginFrontmatter } = await post.render();
 ---
 
 <Layout {locale}>
   <!--{slug} -&#45;&#45; {locale}-->
   <!--<Debug {post} />-->
-  <h1 class="text-7xl text-center font-fa-sans font-black leading-tight lg:h-72 flex items-center">
+  <h1
+    class="flex items-center text-center font-fa-sans text-7xl font-black leading-tight lg:h-72"
+  >
     {post.data.title}
   </h1>
-  <main class="prose grid-container fullwidth">
-    <Image class="w-full rounded-md object-cover breakout" {...post.data.featuredImage} />
-    <Content />
+
+  <main class="grid-container fullwidth">
+    <Image
+      class="breakout w-full rounded-md object-cover"
+      {...post.data.featuredImage}
+    />
+    <nav class="fullwidth top-16 sticky grid-container bg-background w-full">
+      <ul class="flex flex-wrap gap-4 py-4">
+        {
+          headings
+            .filter(heading => heading.depth < 3)
+            .map(heading => (
+              <li>
+                <a class="px-4 py-1 rounded hover:bg-muted" href={"#" + heading.slug} >{heading.text}</a>
+              </li>
+            ))
+        }
+      </ul>
+    </nav>
+    <article class="prose">
+      <Content />
+    </article>
   </main>
 </Layout>

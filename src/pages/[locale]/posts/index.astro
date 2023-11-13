@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import getSortedPosts from "../../../utils/getSortedPosts";
+import Layout from "../../../layouts/Layout.astro";
+import { divide } from "lodash-es";
+
+const posts = await getCollection("blog")
+const {locale} = Astro.params
+const sortedPost = getSortedPosts(posts, locale)
+
+---
+
+<Layout {locale}>
+
+  <main>
+    {sortedPost.map(post => <div>
+      <h2>
+        <a href={'posts/' + post.slug}>
+          {post.data.title}
+        </a>
+      </h2>
+    </div>)}
+  </main>
+
+</Layout>

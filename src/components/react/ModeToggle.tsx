@@ -23,7 +23,7 @@ export default function ModeToggle({ className }: HTMLFormElement) {
   }, [theme]);
 
   return (
-    <Menu as="div" className="relative">
+    <Menu as="div" className="relative bg-background z-5">
       <Menu.Button className={cn("bg-slate-50 dark:bg-slate-950 p-0.5 hover:ring-2 hover:ring-slate-200 hover:bg-slate-100 focus:ring-slate-600 rounded-full")}>
         {isDark ? (
           <Icon icon="tabler:moon" className={cn(className, 'h-8 w-8')} />
@@ -94,5 +94,5 @@ export function navMenuButtonStyle() {
 }
 
 export function navMenuItemsStyle() {
-    return 'absolute border border-foreground top-[4em] right-0 mt-2 w-26 origin-top-right rounded bg-card shadow-[4px_3px_0px_0px_hsl(var(--foreground))] ring-1 ring-black/5 focus:outline-none'
+    return 'absolute border border-foreground top-[2em] right-0 mt-2 w-26 origin-top-right rounded bg-card shadow-[4px_3px_0px_0px_hsl(var(--foreground))] ring-1 ring-black/5 focus:outline-none'
 }

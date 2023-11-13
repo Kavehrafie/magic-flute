@@ -69,7 +69,7 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body class="subpixel-antialiased grid-container bg-background">
-    <Header />
+    <Header {locale} />
     <slot />
   <Footer />
   </body>

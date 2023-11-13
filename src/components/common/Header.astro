@@ -1,8 +1,8 @@
 ---
 import { SITE } from "../../config";
 import ModeToggle from "@components/react/ModeToggle";
-import { cn } from "../../utils/tw";
-import { DEFAULT_LOCALE } from "../../lib/i18n";
+import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
+import Logo from "./Logo.astro";
 
 export interface Props {
   activeNav?: "posts" | "search";
@@ -15,40 +15,52 @@ interface MenuLinks {
 const { activeNav, locale = DEFAULT_LOCALE } = Astro.props;
 const mainMenuLinks = [
   {
-    label: 'Posts',
-    slug: `/${locale}/posts`
+    label: useTranslations(locale)('nav.posts'),
+    slug: `/${locale}/posts`,
   },
-  {
-    label: 'About',
-    slug: `/${locale}`
-  }
-]
-
+];
 ---
 
 <header
   id="main-nav-bar"
-  class="expanded bg-background sticky top-0 mx-auto w-full border-b duration-150 fullwidth grid-container"
+  class="expanded fullwidth grid-container sticky top-0 mx-auto w-full border-b bg-background duration-150"
 >
-  <div class="flex items-center justify-between ">
-
-  <div class="flex gap-x-10 items-end">
-    <a class="site-title block overflow-hidden" href=`/${locale}`>{SITE.title}</a>
-    <nav class="flex gap-x-4">
-      {mainMenuLinks.map(link => <a href={link.slug}>{link.label}</a>)}
-    </nav>
-  </div>
-  <div class="flex gap-x-4 items-center">
-    <ModeToggle client:load className=" toggle-theme" />
-  </div>
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-x-10">
+      <a class="site-title flex gap-x-2 items-center font-ui" href=`/${locale}`
+        >
+        <!--<span class="relative">-->
+        <!--  <span class="block absolute top-0 overflow-hidden w-8 h-12 rotate-45">-->
+        <!--    <span class="bg-foreground w-10 h-10 block -rotate-45"></span>-->
+        <!--  </span>-->
+        <!--  <span class="block h-9 w-9 bg-background right-0 absolute rounded-full border border-foreground"-->
+        <!--  ></span>-->
+        <!--  <span-->
+        <!--    class="absolute -right-1 top-0 block h-0 w-0-->
+        <!--          -rotate-45 border-b-[10px]-->
+        <!--          border-r-[30px] border-t-[10px]-->
+        <!--          border-b-transparent border-r-primary-->
+        <!--          border-t-transparent"-->
+        <!--  ></span>-->
+        <!--</span>-->
+        <Logo class="rounded-full"/>
+        <span class="site-title-text">{SITE.title}</span>
+      </a
+      >
+      <nav class="flex gap-x-4 items">
+        {mainMenuLinks.map(link => <a class="font-semibold px-3 py-1 rounded-lg hover:bg-accent rtl:text-xl" href={link.slug}>{link.label}</a>)}
+      </nav>
+    </div>
+    <div class="flex items-center gap-x-4">
+      <ModeToggle client:load className=" toggle-theme" />
+    </div>
   </div>
 </header>
 
 <script>
   import { gsap } from "gsap";
-  import { debounce, throttle } from "lodash-es";
+  import { debounce } from "lodash-es";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import * as events from "events";
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -58,12 +70,11 @@ const mainMenuLinks = [
       trigger: "body",
       start: "top top",
       end: "+=80%",
-      onUpdate: throttle(self => {
+      onUpdate: debounce(self => {
         if (self.direction > 0) {
           headerElement.classList.add("shrink");
           headerElement.classList.remove("expanded");
         } else {
-          console.log(self.direction);
           headerElement.classList.remove("shrink");
           headerElement.classList.add("expanded");
         }
@@ -82,7 +93,6 @@ const mainMenuLinks = [
   }
 
   .expanded .toggle-theme {
-
   }
 
   .expanded {
@@ -90,10 +100,21 @@ const mainMenuLinks = [
   }
 
   .expanded .site-title {
-    @apply before:bg-primary font-bold text-primary text-2xl  italic before:block before:left-0 rtl:before:right-0 before:h-4 before:w-full before:absolute before:top-0 before:-translate-y-2 before:rotate-[0.6deg];
+    @apply text-2xl font-bold italic text-primary;
+  }
+
+  .expanded .site-title svg {
+    @apply w-14 h-14;
+  }
+
+  .shrink .site-title svg {
+      @apply w-12 h-12;
   }
 
   .shrink .site-title {
-    @apply text-primary before:bg-primary text-lg font-semibold italic before:block before:h-3 before:w-full before:absolute before:top-0 before:-translate-y-2 before:rotate-[2deg] relative;
+    @apply relative text-lg font-semibold italic text-primary;
+  }
+  .shrink .site-title .site-title-text {
+      @apply hidden;
   }
 </style>
