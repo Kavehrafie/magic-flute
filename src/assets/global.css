@@ -1,3 +1,95 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --max-content-width: 90ch;
+    --breakout-difference: 0.2;
+
+    /*  Compute total allowed grid width to `--breakout-difference`
+            larger than content area  */
+    --breakout-grid-width: calc(
+      var(--max-content-width) +
+        (var(--max-content-width) * var(--breakout-difference))
+    );
+
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 346.8 77.2% 49.8%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 346.8 77.2% 49.8%;
+  }
+  body {
+    @apply font-ui rtl:font-fa-serif;
+  }
+}
+
+@layer components {
+  .grid-container {
+    display: grid;
+    grid-template-columns:
+      [grid-start] 1fr [breakout-start] 1fr
+      [content-start] minmax(min(100%, var(--max-content-width)), 1fr)
+      [content-end]
+      1fr [breakout-end]
+      1fr [grid-end];
+    /*width: min(100% - 2rem, var(--breakout-grid-width));*/
+    row-gap: 1rem;
+    margin: 0 auto;
+  }
+
+  .grid-container > *:not(.breakout),
+  .grid-container > *:not(.fullwidth) {
+    grid-column: content;
+  }
+
+  .grid-container > .breakout {
+    grid-column: breakout;
+  }
+
+  .grid-container > .fullwidth {
+    grid-column: grid;
+  }
+
+
+  .prose {
+    @apply max-w-none prose-lg;
+  }
+}

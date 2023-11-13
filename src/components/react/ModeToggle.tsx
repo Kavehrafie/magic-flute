@@ -1,53 +1,98 @@
 import { useEffect, useState } from "react";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Icon } from "@iconify/react";
+import { cn } from "@utils/tw.ts";
 
-export default function ModeToggle() {
-  const [theme, setThemeState] = useState<
-    "theme-light" | "dark" | "system"
-  >("theme-light")
+export default function ModeToggle({ className }: HTMLFormElement) {
+  const [theme, setThemeState] = useState<"theme-light" | "dark" | "system">(
+    "theme-light"
+  );
 
   useEffect(() => {
-    const isDarkMode = document.documentElement.classList.contains("dark")
-    setThemeState(isDarkMode ? "dark" : "theme-light")
-  }, [])
+    const isDarkMode = document.documentElement.classList.contains("dark");
+    setThemeState(isDarkMode ? "dark" : "theme-light");
+  }, []);
 
+  const isDark =
+    theme === "dark" ||
+    (theme === "system" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
   useEffect(() => {
-    const isDark =
-      theme === "dark" ||
-      (theme === "system" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    document.documentElement.classList[isDark ? "add" : "remove"]("dark")
-  }, [theme])
+    document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+  }, [theme]);
 
   return (
+    <Menu as="div" className="relative">
+      <Menu.Button className={cn("bg-slate-50 dark:bg-slate-950 p-0.5 hover:ring-2 hover:ring-slate-200 hover:bg-slate-100 focus:ring-slate-600 rounded-full")}>
+        {isDark ? (
+          <Icon icon="tabler:moon" className={cn(className, 'h-8 w-8')} />
+        ) : (
+          <Icon icon="tabler:sun" className={cn(className, 'h-8 w-8')} />
+        )}
+      </Menu.Button>
+        <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+        >
+      <Menu.Items className={cn(navMenuItemsStyle(), className)} as="ul">
+        <Menu.Item as={Fragment}>
+          {({ active }) => (
+            <li className="px-1 py-1">
+            <button
+              onClick={() => setThemeState("theme-light")}
+              className={cn(navMenuButtonStyle(), [
+                active ? " bg-foreground text-white" : "bg-white text-black"
+              ])}
+            >
+              light
+            </button>
+            </li>
+          )}
+        </Menu.Item>
+        <Menu.Item as={Fragment}>
+          {({ active }) => (
+            <li className="px-1 py-1">
+              <button
+                onClick={() => setThemeState("dark")}
+                className={cn(navMenuButtonStyle(), [
+                  active ? " bg-foreground text-white" : "bg-white text-black"
+                ])}
+              >
+                dark
+              </button>
+            </li>
+          )}
+        </Menu.Item>
+        <Menu.Item as={Fragment}>
+          {({ active }) => (
+            <li className="px-1 py-1">
+              <button
+                onClick={() => setThemeState("system")}
+                className={cn(navMenuButtonStyle(), [
+                  active ? " bg-foreground text-white" : "bg-white text-black"
+                ])}
+              >
+                system
+              </button>
+            </li>
+          )}
+        </Menu.Item>
+      </Menu.Items>
+        </Transition>
+    </Menu>
+  );
+}
 
-    <>
+export function navMenuButtonStyle() {
+    return 'w-full justify-center rounded px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'
+}
 
-
-      <div className="flex gap-x-4">
-
-    <button type='button' onClick={() => setThemeState("dark")}>dark</button>
-    <button type='button' className='dark:bg-amber-700 rounded-md px-4 py-2 bg-amber-200' onClick={() => setThemeState("theme-light")}>light</button>
-      </div>
-    </>
-    // <DropdownMenu>
-    //   <DropdownMenuTrigger asChild>
-    //     <Button variant="outline" size="icon">
-    //       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-    //       <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-    //       <span className="sr-only">Toggle theme</span>
-    //     </Button>
-    //   </DropdownMenuTrigger>
-    //   <DropdownMenuContent align="end">
-    //     <DropdownMenuItem onClick={() => setThemeState("theme-light")}>
-    //       Light
-    //     </DropdownMenuItem>
-    //     <DropdownMenuItem onClick={() => setThemeState("dark")}>
-    //       Dark
-    //     </DropdownMenuItem>
-    //     <DropdownMenuItem onClick={() => setThemeState("system")}>
-    //       System
-    //     </DropdownMenuItem>
-    //   </DropdownMenuContent>
-    // </DropdownMenu>
-  )
+export function navMenuItemsStyle() {
+    return 'absolute border border-foreground top-[4em] right-0 mt-2 w-26 origin-top-right rounded bg-card shadow-[4px_3px_0px_0px_hsl(var(--foreground))] ring-1 ring-black/5 focus:outline-none'
 }

@@ -1,16 +1,20 @@
 ---
-export const prerender = true
+import { DEFAULT_LOCALE } from "../../../../lib/i18n";
+export const prerender = true;
 
-import {getEntry} from "astro:content";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+import { getLocales } from "@lib/i18n";
 import Layout from "@layouts/Layout.astro";
-// import { Debug } from "astro:components";
+import { Debug } from "astro:components";
 // import getSortedPosts from "@utils/getSortedPosts";
 // import { getPost } from "../../../../utils/getPosts";
 
 // import { getEntry } from "astro:content"
 
 // const {locale} = Astro.locals
-const {slug} = Astro.params
+const { slug } = Astro.params;
 
 // const post = await getPost(`../content/blog/${locale}/adding-new-post.md`)
 // const post2 = getEntry('blog', slug)
@@ -24,21 +28,45 @@ const {slug} = Astro.params
 
 // const sortedPosts = getSortedPosts(posts, locale)
 
-
 // const {Content, url, file} = posts[0]
 // if (!post) Astro.redirect('/404')
 //
 // const {Content, headings, remarkPluginFrontmatter } = await post.render()
 
-export function getStaticPaths() {
-  return [{
-    params: {slug: 'this', locale: 'en'}
-  }]
+export async function getStaticPaths() {
+  const locales = getLocales();
+
+  const posts = await getCollection("blog", ({ data }) => !data?.draft);
+  return posts.map(post => {
+    const locale = post.id.split("/")[0];
+    return {
+      params: {
+        slug: post.slug,
+        locale:
+          post?.data.locale && locales.includes(locale)
+            ? locale
+            : DEFAULT_LOCALE,
+      },
+      props: { post }
+    };
+  });
+
 }
+
+const {locale} = Astro.params
+const { post } = Astro.props
+const {Content ,headings} = await post.render()
+
 ---
 
-<Layout>
+<Layout {locale}>
   <!--{slug} -&#45;&#45; {locale}-->
-<!--<Debug {post} />-->
-<!--<Content />-->
+  <!--<Debug {post} />-->
+  <h1 class="text-7xl text-center font-fa-sans font-black leading-tight lg:h-72 flex items-center">
+    {post.data.title}
+  </h1>
+  <main class="prose grid-container fullwidth">
+    <Image class="w-full rounded-md object-cover breakout" {...post.data.featuredImage} />
+    <Content />
+  </main>
 </Layout>

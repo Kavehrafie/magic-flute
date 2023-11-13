@@ -1,50 +1,76 @@
 ---
-import '@assets/global.css'
-import {isRtl} from "../lib/i18n";
+import { SITE } from "@config";
+import "@assets/global.css";
+import { DEFAULT_LOCALE, isRtl } from "../lib/i18n";
 import Header from "../components/common/Header.astro";
+import '@fontsource-variable/montserrat';
 
-const {locale} = Astro.locals
-const dir = isRtl(locale) ? 'rtl' : 'ltr'
+// Farsi fonts
+import '@fontsource-variable/noto-sans-arabic';
+import '@fontsource-variable/vazirmatn';
+import Footer from "@components/common/Footer.astro";
+interface Props {
+  locale: string;
+  title?: string;
+  author?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const {
+  locale = DEFAULT_LOCALE,
+  title = SITE.title,
+  author = SITE.author,
+  description = SITE.desc,
+  ogImage = SITE.ogImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+} = Astro.props;
+const dir = isRtl(locale) ? "rtl" : "ltr";
 ---
+
 <script is:inline>
-    const getThemePreference = () => {
-        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-            return localStorage.getItem("theme");
-        }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-    };
-    const isDark = getThemePreference() === "dark";
-    document.documentElement.classList[isDark ? "add" : "remove"]("dark");
-
-    if (typeof localStorage !== "undefined") {
-        const observer = new MutationObserver(() => {
-            const isDark = document.documentElement.classList.contains("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-        });
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ["class"],
-        });
+  const getThemePreference = () => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
     }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+  const isDark = getThemePreference() === "dark";
+  document.documentElement.classList[isDark ? "add" : "remove"]("dark");
 
+  if (typeof localStorage !== "undefined") {
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  }
 </script>
 
 <html lang={locale} dir={dir}>
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator}/>
-    <title>Astro</title>
+    <meta name="generator" content={Astro.generator} />
 
-</head>
-<body class="dark:bg-amber-200">
-<Header/>
-<slot/>
-
-
-
-</body>
+    <!-- General Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body class="subpixel-antialiased grid-container bg-background">
+    <Header />
+    <slot />
+  <Footer />
+  </body>
 </html>

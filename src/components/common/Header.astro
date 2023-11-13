@@ -1,24 +1,99 @@
 ---
-import {SITE} from "../../config";
+import { SITE } from "../../config";
 import ModeToggle from "@components/react/ModeToggle";
+import { cn } from "../../utils/tw";
+import { DEFAULT_LOCALE } from "../../lib/i18n";
 
 export interface Props {
-  activeNav?: "posts" | "search"
+  activeNav?: "posts" | "search";
+}
+interface MenuLinks {
+  label: string;
+  slug?: string;
 }
 
-const {activeNav} = Astro.props
+const { activeNav, locale = DEFAULT_LOCALE } = Astro.props;
+const mainMenuLinks = [
+  {
+    label: 'Posts',
+    slug: `/${locale}/posts`
+  },
+  {
+    label: 'About',
+    slug: `/${locale}`
+  }
+]
 
 ---
 
-<header>
-    <div>
+<header
+  id="main-nav-bar"
+  class="expanded bg-background sticky top-0 mx-auto w-full border-b duration-150 fullwidth grid-container"
+>
+  <div class="flex items-center justify-between ">
 
-    <div>
-        <a href="">{SITE.title}</a>
-    </div>
-
-        <nav>
-<ModeToggle client:load />
-        </nav>
-    </div>
+  <div class="flex gap-x-10 items-end">
+    <a class="site-title block overflow-hidden" href=`/${locale}`>{SITE.title}</a>
+    <nav class="flex gap-x-4">
+      {mainMenuLinks.map(link => <a href={link.slug}>{link.label}</a>)}
+    </nav>
+  </div>
+  <div class="flex gap-x-4 items-center">
+    <ModeToggle client:load className=" toggle-theme" />
+  </div>
+  </div>
 </header>
+
+<script>
+  import { gsap } from "gsap";
+  import { debounce, throttle } from "lodash-es";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import * as events from "events";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  window.addEventListener("load", () => {
+    const headerElement = document.getElementById("main-nav-bar");
+    ScrollTrigger.create({
+      trigger: "body",
+      start: "top top",
+      end: "+=80%",
+      onUpdate: throttle(self => {
+        if (self.direction > 0) {
+          headerElement.classList.add("shrink");
+          headerElement.classList.remove("expanded");
+        } else {
+          console.log(self.direction);
+          headerElement.classList.remove("shrink");
+          headerElement.classList.add("expanded");
+        }
+      }, 30),
+    });
+  });
+</script>
+
+<style is:global>
+  .shrink {
+    @apply h-16;
+  }
+
+  .shrink .toggle-theme {
+    @apply hidden;
+  }
+
+  .expanded .toggle-theme {
+
+  }
+
+  .expanded {
+    @apply h-20;
+  }
+
+  .expanded .site-title {
+    @apply before:bg-primary font-bold text-primary text-2xl  italic before:block before:left-0 rtl:before:right-0 before:h-4 before:w-full before:absolute before:top-0 before:-translate-y-2 before:rotate-[0.6deg];
+  }
+
+  .shrink .site-title {
+    @apply text-primary before:bg-primary text-lg font-semibold italic before:block before:h-3 before:w-full before:absolute before:top-0 before:-translate-y-2 before:rotate-[2deg] relative;
+  }
+</style>

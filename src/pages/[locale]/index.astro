@@ -1,32 +1,20 @@
 ---
 export const prerender = true;
-// import { Debug } from "astro:components";
 
 import {getLocales} from "@lib/i18n";
 import Layout from "@layouts/Layout.astro";
 
-// const { resource, id } = Astro.params;
-const {visitorCountry, locale} = Astro.locals
-
 const locales = getLocales()
-// if (!locales.includes(locale)) Astro.redirect("/404")
 
+const {locale} = Astro.params
 export function getStaticPaths() {
-
-  const locales = ['en']
-	const paths = getLocales()?.map(t => ({
-		params: {locale: t}
-	}))
-
-	return paths
+  return getLocales()?.map(locale => ({
+    params: { locale: locale }
+  }))
 }
 
 ---
 
-<Layout>
-  <a href="/en/posts/fnakfnakj">fmalnfakjfb</a>
-  <p class="text-2xl text-red-500">
-    {locale} -- {visitorCountry}
-  </p>
-
+<Layout {locale}>
+  <div class="h-[200vh]"></div>
 </Layout>
