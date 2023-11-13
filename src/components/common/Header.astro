@@ -15,7 +15,7 @@ interface MenuLinks {
 const { activeNav, locale = DEFAULT_LOCALE } = Astro.props;
 const mainMenuLinks = [
   {
-    label: useTranslations(locale)('nav.posts'),
+    label: useTranslations(locale)("nav.posts"),
     slug: `/${locale}/posts`,
   },
 ];
@@ -23,12 +23,14 @@ const mainMenuLinks = [
 
 <header
   id="main-nav-bar"
-  class="expanded fullwidth grid-container sticky top-0 mx-auto w-full border-b bg-background duration-150"
+  class="expanded fullwidth grid-container sticky top-0 z-10 mx-auto w-full border-b bg-background duration-150"
 >
+  <div class="fullwidth fixed w-full">
+    <span id="progress-bar" class="block bg-primary h-2"></span>
+  </div>
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-x-10">
-      <a class="site-title flex gap-x-2 items-center font-ui" href=`/${locale}`
-        >
+      <a class="site-title flex items-center gap-x-2 font-ui" href=`/${locale}`>
         <!--<span class="relative">-->
         <!--  <span class="block absolute top-0 overflow-hidden w-8 h-12 rotate-45">-->
         <!--    <span class="bg-foreground w-10 h-10 block -rotate-45"></span>-->
@@ -43,12 +45,20 @@ const mainMenuLinks = [
         <!--          border-t-transparent"-->
         <!--  ></span>-->
         <!--</span>-->
-        <Logo class="rounded-full"/>
+        <Logo class="rounded-full" />
         <span class="site-title-text">{SITE.title}</span>
-      </a
-      >
-      <nav class="flex gap-x-4 items">
-        {mainMenuLinks.map(link => <a class="font-semibold px-3 py-1 rounded-lg hover:bg-accent rtl:text-xl" href={link.slug}>{link.label}</a>)}
+      </a>
+      <nav class="items flex gap-x-4">
+        {
+          mainMenuLinks.map(link => (
+            <a
+              class="rounded-lg px-3 py-1 font-semibold hover:bg-accent rtl:text-xl"
+              href={link.slug}
+            >
+              {link.label}
+            </a>
+          ))
+        }
       </nav>
     </div>
     <div class="flex items-center gap-x-4">
@@ -64,21 +74,34 @@ const mainMenuLinks = [
 
   gsap.registerPlugin(ScrollTrigger);
 
+
   window.addEventListener("load", () => {
     const headerElement = document.getElementById("main-nav-bar");
+    const progressElement = document.getElementById("progress-bar");
+    progressElement.style.width = "0";
+
+    let progress = 0;
+
     ScrollTrigger.create({
       trigger: "body",
       start: "top top",
-      end: "+=80%",
+      end: "bottom bottom",
       onUpdate: debounce(self => {
-        if (self.direction > 0) {
-          headerElement.classList.add("shrink");
-          headerElement.classList.remove("expanded");
-        } else {
-          headerElement.classList.remove("shrink");
-          headerElement.classList.add("expanded");
+        console.log(progress, self.progress * 100);
+        progressElement.style.width = Math.round(self.progress * 100) + '%'
+        if (Math.abs(progress - self.progress * 100) > 1) {
+          if (self.direction > 0) {
+            headerElement.classList.add("shrink");
+            headerElement.classList.remove("expanded");
+          }
+
+          if (self.direction < 0) {
+            headerElement.classList.remove("shrink");
+            headerElement.classList.add("expanded");
+          }
         }
-      }, 30),
+        progress = self.progress * 100;
+      }, 15),
     });
   });
 </script>
@@ -104,17 +127,18 @@ const mainMenuLinks = [
   }
 
   .expanded .site-title svg {
-    @apply w-14 h-14;
+    @apply h-14 w-14;
   }
 
   .shrink .site-title svg {
-      @apply w-12 h-12;
+    @apply h-12 w-12;
   }
 
   .shrink .site-title {
     @apply relative text-lg font-semibold italic text-primary;
   }
+
   .shrink .site-title .site-title-text {
-      @apply hidden;
+    @apply hidden;
   }
 </style>
