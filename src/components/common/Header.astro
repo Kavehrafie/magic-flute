@@ -3,16 +3,22 @@ import { SITE } from "../../config";
 import ModeToggle from "@components/react/ModeToggle";
 import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
 import Logo from "./Logo.astro";
+import { cn } from "../../utils/tw";
 
 export interface Props {
   activeNav?: "posts" | "search";
+  showProgressBar: boolean;
 }
 interface MenuLinks {
   label: string;
   slug?: string;
 }
 
-const { activeNav, locale = DEFAULT_LOCALE } = Astro.props;
+const {
+  activeNav,
+  locale = DEFAULT_LOCALE,
+  showProgressBar = false,
+} = Astro.props;
 const mainMenuLinks = [
   {
     label: useTranslations(locale)("nav.posts"),
@@ -25,8 +31,12 @@ const mainMenuLinks = [
   id="main-nav-bar"
   class="expanded fullwidth grid-container sticky top-0 z-10 mx-auto w-full border-b bg-background duration-150"
 >
-  <div class="fullwidth fixed w-full">
-    <span id="progress-bar" class="block bg-primary h-2"></span>
+  <div
+    class:list={cn("fullwidth fixed top-0 w-full", {
+      hidden: !showProgressBar,
+    })}
+  >
+    <span id="progress-bar" class="block h-2 bg-primary transition-all duration-150 ease-out"></span>
   </div>
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-x-10">
@@ -74,8 +84,7 @@ const mainMenuLinks = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-
-  window.addEventListener("load", () => {
+  function initiateScrollControl() {
     const headerElement = document.getElementById("main-nav-bar");
     const progressElement = document.getElementById("progress-bar");
     progressElement.style.width = "0";
@@ -87,8 +96,8 @@ const mainMenuLinks = [
       start: "top top",
       end: "bottom bottom",
       onUpdate: debounce(self => {
-        console.log(progress, self.progress * 100);
-        progressElement.style.width = Math.round(self.progress * 100) + '%'
+        // console.log(progress, self.progress * 100);
+        progressElement.style.width = Math.round(self.progress * 100) + "%";
         if (Math.abs(progress - self.progress * 100) > 1) {
           if (self.direction > 0) {
             headerElement.classList.add("shrink");
@@ -103,6 +112,11 @@ const mainMenuLinks = [
         progress = self.progress * 100;
       }, 15),
     });
+  }
+
+  initiateScrollControl();
+  document.addEventListener("astro:after-swap", ev => {
+    initiateScrollControl();
   });
 </script>
 

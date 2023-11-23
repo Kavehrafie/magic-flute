@@ -4,6 +4,7 @@ import "@assets/global.css";
 import { DEFAULT_LOCALE, isRtl } from "../lib/i18n";
 import Header from "../components/common/Header.astro";
 import '@fontsource-variable/montserrat';
+import { ViewTransitions } from "astro:transitions";
 
 // Farsi fonts
 import '@fontsource-variable/noto-sans-arabic';
@@ -16,6 +17,7 @@ interface Props {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  showProgressBar: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   description = SITE.desc,
   ogImage = SITE.ogImage,
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  showProgressBar = false
 } = Astro.props;
 const dir = isRtl(locale) ? "rtl" : "ltr";
 ---
@@ -67,9 +70,11 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <ViewTransitions />
   </head>
   <body class="subpixel-antialiased grid-container bg-background">
-    <Header {locale} />
+    <Header {...{locale, showProgressBar}} />
     <slot />
   <Footer />
   </body>
