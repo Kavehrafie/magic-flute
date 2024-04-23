@@ -1,9 +1,9 @@
 ---
 import { SITE } from "../../config";
-import ModeToggle from "@components/react/ModeToggle";
+import {ModeToggle} from "@components/react/ModeToggle";
 import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
 import Logo from "./Logo.astro";
-import { cn } from "../../utils/tw";
+
 
 export interface Props {
   activeNav?: "posts" | "search";
@@ -40,15 +40,15 @@ const mainMenuLinks = [
   class="expanded fullwidth grid-container sticky top-0 z-10 mx-auto w-full border-b bg-background duration-150"
 >
   <div
-    class:list={cn("fullwidth fixed top-0 w-full", {
+    class:list={["fullwidth fixed top-0 w-full", {
       hidden: !showProgressBar,
-    })}
+    }]}
   >
     <span id="progress-bar" class="block h-1 bg-primary transition-all duration-150 ease-out"></span>
   </div>
   <div class="flex items-center justify-between py-4">
     <div class="flex items-center gap-x-10">
-      <ModeToggle client:visible className=" toggle-theme" />
+      <ModeToggle client:visible  className="toggle-theme" />
       <nav class="items flex gap-x-4 px-4 border-r">
         {
           mainMenuLinks.map(link => (
