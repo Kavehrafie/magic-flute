@@ -2,24 +2,35 @@
 import { getCollection } from "astro:content";
 import getSortedPosts from "../../../utils/getSortedPosts";
 import Layout from "../../../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import { divide } from "lodash-es";
 
-const posts = await getCollection("blog")
-const {locale} = Astro.params
-const sortedPost = getSortedPosts(posts, locale)
-
+const posts = await getCollection("blog");
+const { locale } = Astro.params;
+const sortedPost = getSortedPosts(posts, locale);
 ---
 
 <Layout {locale}>
+  <main class="h-screen">
+    <div class="grid grid-cols-2 gap-4">
 
-  <main>
-    {sortedPost.map(post => <div>
-      <h2>
-        <a href={'posts/' + post.slug}>
-          {post.data.title}
+    {
+      sortedPost.map(post => (
+        <a class="relative rounded overflow-hidden grid grid-cols-1 grid-rows-1 items-center"
+           href={"posts/" + post.slug}>
+
+            <Image
+              class="row-start-1 col-start-1"
+              src={`${post.data.featuredImage.src}&width=500&height=400`}
+              width={500}
+              height={400}
+              alt={post.data.title}
+            />
+
+          <h2 class="row-start-1 col-start-1 px-4 py-6 text-4xl ">{post.data.title}</h2>
         </a>
-      </h2>
-    </div>)}
+      ))
+    }
+    </div>
   </main>
-
 </Layout>

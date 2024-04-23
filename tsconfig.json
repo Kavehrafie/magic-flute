@@ -2,34 +2,37 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
+      "@/*": [
+        "./src/*"
+      ],
       "@assets/*": [
-        "assets/*"
+        "./src/assets/*"
       ],
       "@config": [
-        "config.ts"
+        "./src/config.ts"
       ],
       "@components/*": [
-        "components/*"
+        "./src/components/*"
       ],
       "@content/*": [
-        "content/*"
+        "./src/content/*"
       ],
       "@layouts/*": [
-        "layouts/*"
+        "./src/layouts/*"
       ],
       "@pages/*": [
-        "pages/*"
+        "./src/pages/*"
       ],
       "@styles/*": [
-        "styles/*"
+        "./src/styles/*"
       ],
       "@utils/*": [
-        "utils/*"
+        "./src/utils/*"
       ],
       "@lib/*": [
-        "lib/*"
+        "./src/lib/*"
       ]
     },
     "jsx": "react-jsx",

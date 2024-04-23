@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import { getLocales } from "@lib/i18n";
+import { DEFAULT_LOCALE } from "@lib/i18n";
+import { Languages } from "@lib/i18n";
+import Layout from "../../../../layouts/Layout.astro";
+import PodcastTrigger from "@/components/react/PodcastTrigger";
+import {Debug} from "astro:components"
+
+export async function getStaticPaths() {
+  const locales = getLocales();
+
+  const posts = await getCollection("podcasts", ({ data }) => !data?.draft);
+  return posts.map(post => {
+    const locale: Languages = <"en" | "fa">post.id.split("/")[0];
+    return {
+      params: {
+        slug: post.slug,
+        locale:
+          post?.data.locale && locales.includes(locale)
+            ? locale
+            : DEFAULT_LOCALE,
+      },
+      props: { post },
+    };
+  });
+}
+
+const { locale, slug } = Astro.params;
+const { post } = Astro.props;
+const { Content, headings, remarkPluginFrontmatter } = await post.render();
+
+export const prerender = true;
+---
+
+<Layout {locale} >
+  <a href="/fa/podcasts/new-episode-1" >episode 1</a>
+  <a href="/fa/podcasts/new-episode-2" >episode 2</a>
+
+  <PodcastTrigger audio={{src: remarkPluginFrontmatter.url, title:remarkPluginFrontmatter.title}} client:load />
+  <Content />
+</Layout>

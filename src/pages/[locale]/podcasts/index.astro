@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import getSortedPosts from "../../../utils/getSortedPosts";
+import Layout from "../../../layouts/Layout.astro";
+import PodcastTrigger from "@/components/react/PodcastTrigger";
+import { Image } from "astro:assets";
+import {PlayIcon, ChevronRightIcon, ExternalLinkIcon} from "lucide-react"
+const podcasts = await getCollection("podcasts");
+const { locale } = Astro.params;
+// const sortedPost = getSortedPosts(posts, locale);
+---
+
+<Layout {locale}>
+  <main class="min-h-svh">
+    <div class="grid grid-cols-1 space-y-4 ">
+    {
+      podcasts.map(post => (
+        <section class="grid grid-cols-[300px_1fr_3ch] gap-2 grid-rows-[8em_1fr] relative overflow-hidden flex items-center m-2 overflow-hidden border rounded-2xl">
+
+            <Image
+              class=" cover-object row-span-2 col-span-1 col-start-1 row-start-1"
+              src={`${post.data.featuredImage.src}&width=400&height=300`}
+              width={300}
+              height={250}
+              alt={post.data.title}
+            />
+
+          <PodcastTrigger
+            audio={{src: post.data.url, title:post.data.title}}
+            client:load
+            className="opacity-0 hover:opacity-100 transition-opacity w-full h-full bg-foreground/15 col-start-1 row-start-1 col-span-1 row-span-2 flex justify-center items-center">
+           <span class="rounded-full bg-background/50 p-4">
+            <PlayIcon  className="w-10 h-10"/>
+           </span>
+          </PodcastTrigger>
+
+          <h2 class=" px-4 py-6 text-4xl rtl:font-fa-sans rtl:font-bold">{post.data.title}</h2>
+
+          <div class="mb-auto mt-0 text-left w-full p-4 flex justify-end items-start">
+            <a class="flex  px-4 py-2 text-sm rounded-lg" href={`podcasts/${post.slug}`}>
+              <ExternalLinkIcon class="w-6 h-6"></ExternalLinkIcon>
+              <span class="sr-only">details</span>
+            </a>
+          </div>
+
+          <p class="col-span-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus at delectus dolorem, earum enim in iusto magni minima necessitatibus quam ratione repellendus sint totam. Eos et fugit laborum mollitia nostrum!</p>
+        </section>
+      ))
+    }
+    </div>
+  </main>
+</Layout>

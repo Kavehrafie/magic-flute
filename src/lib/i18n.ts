@@ -1,4 +1,4 @@
-type Languages = keyof typeof languages
+export type Languages = keyof typeof languages
 export const languages = {
   en: {
     uLabel: 'English',
@@ -14,17 +14,21 @@ export const languages = {
 
 export const ui = {
   fa: {
-    'nav.posts': 'بلاگ'
+    'nav.posts': 'بلاگ',
+    'nav.about': 'درباره',
+    'nav.podcast': 'پادکست',
   },
   en: {
-    'nav.posts': 'Posts'
+    'nav.posts': 'Posts',
+    'nav.about': 'About',
+    'nav.podcast': 'Podcast',
   }
 }
 
 export const DEFAULT_LOCALE = 'en'
 export const rtlLanguages = ['fa']
 
-export const getLocales = () : Languages[] | string => Object.keys(languages)
+export const getLocales = () : Languages[] | string => <Languages[] | []> Object.keys(languages)
 
 export function isRtl(locale: Languages | string) : boolean {
   return rtlLanguages.includes(locale)
@@ -39,7 +43,6 @@ export function getLocaleFromUrl(url: URL) {
 
 export function useTranslations(lang: keyof typeof ui) {
   return function t(key: keyof typeof ui[typeof DEFAULT_LOCALE]) {
-  console.log('>>>', ui[lang][key]);
     return ui[lang][key] || ui[DEFAULT_LOCALE][key];
   }
 }

@@ -2,7 +2,7 @@
 import { SITE } from "@config";
 import "@assets/global.css";
 import { DEFAULT_LOCALE, isRtl } from "../lib/i18n";
-import Header from "../components/common/Header.astro";
+import Header from "@/components/common/Header.astro";
 import '@fontsource-variable/montserrat';
 import { ViewTransitions } from "astro:transitions";
 
@@ -10,6 +10,7 @@ import { ViewTransitions } from "astro:transitions";
 import '@fontsource-variable/noto-sans-arabic';
 import '@fontsource-variable/vazirmatn';
 import Footer from "@components/common/Footer.astro";
+import AudioWrapper from "@/components/react/AudioWrapper";
 interface Props {
   locale: string;
   title?: string;
@@ -76,6 +77,10 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
   <body class="subpixel-antialiased grid-container bg-background">
     <Header {...{locale, showProgressBar}} />
     <slot />
+
+    <div class="breakout sticky bottom-2">
+      <AudioWrapper client:load transition:persist></AudioWrapper>
+    </div>
   <Footer />
   </body>
 </html>
