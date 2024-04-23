@@ -22,7 +22,8 @@ export default defineConfig({
   },
   output: "server",
   adapter: netlify({
-    edgeMiddleware: true
+    edgeMiddleware: true,
+    imageCDN: false,
   }),
   integrations: [react(), tailwind({
     applyBaseStyles: false
