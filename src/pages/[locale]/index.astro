@@ -1,20 +1,81 @@
 ---
-export const prerender = true;
-
-import {getLocales} from "@lib/i18n";
-import Layout from "@layouts/Layout.astro";
-
-const locales = getLocales()
-
-const {locale} = Astro.params
-export function getStaticPaths() {
-  return getLocales()?.map(locale => ({
-    params: { locale: locale }
-  }))
-}
-
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import PodcastTrigger from "@/components/react/PodcastTrigger";
+import { Image } from "astro:assets";
+import { PlayIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-react";
+const { locale } = Astro.params;
+const podcasts = await getCollection(
+  "podcasts",
+  entry => entry.data.draft !== true && entry.data.locale === locale
+);
 ---
 
 <Layout {locale}>
-  <div class="h-[200vh]"></div>
+
+
+  <Image
+    class="fullwidth"
+    src="https://d38ruy7cl1ctq5.cloudfront.net/podcast/juanogorman-ciudaddemexico-1949-2000x1000.jpg"
+    width={2000}
+    height={1000}
+    alt="juan ogorman"
+    slot="featured"
+  />
+  <p class="breakout text-center text-xs" slot="featured">
+    Juan O’Gorman, “La Ciudad de México”, 1949. Museo de Arte Moderno, Mexico
+    City. © 2021, ProLitteris, Zurich
+  </p>
+
+
+
+    <main class="grid-container fullwidth min-h-svh py-6" >
+      <div class="grid grid-cols-1 space-y-4">
+        {
+          podcasts.map(post => (
+            <section class="relative m-2 flex grid grid-cols-[300px_1fr_3ch] grid-rows-[8em_1fr] items-center gap-2 overflow-hidden overflow-hidden rounded-2xl border">
+              <Image
+                class=" cover-object col-span-1 col-start-1 row-span-2 row-start-1"
+                src={`${post.data.featuredImage.src}&width=400&height=300`}
+                width={300}
+                height={250}
+                alt={post.data.title}
+              />
+
+              <PodcastTrigger
+                audio={{ src: post.data.url, title: post.data.title }}
+                client:load
+                className="opacity-0 hover:opacity-100 transition-opacity w-full h-full bg-foreground/15 col-start-1 row-start-1 col-span-1 row-span-2 flex justify-center items-center"
+              >
+                <span class="rounded-full bg-background/50 p-4">
+                  <PlayIcon className="w-10 h-10" />
+                </span>
+              </PodcastTrigger>
+
+              <h2 class=" px-4 py-6 text-4xl rtl:font-fa-sans rtl:font-bold">
+                {post.data.title}
+              </h2>
+
+              <div class="mb-auto mt-0 flex w-full items-start justify-end p-4 text-left">
+                <a
+                  class="flex  rounded-lg px-4 py-2 text-sm"
+                  href={`podcasts/${post.slug}`}
+                >
+                  <ExternalLinkIcon class="h-6 w-6" />
+                  <span class="sr-only">details</span>
+                </a>
+              </div>
+
+              <p class="col-span-2">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Accusamus at delectus dolorem, earum enim in iusto magni minima
+                necessitatibus quam ratione repellendus sint totam. Eos et fugit
+                laborum mollitia nostrum!
+              </p>
+            </section>
+          ))
+        }
+      </div>
+    </main>
+
 </Layout>

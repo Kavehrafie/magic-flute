@@ -96,7 +96,6 @@
       1fr [breakout-end]
       1fr [grid-end];
         /*width: min(100% - 2rem, var(--breakout-grid-width));*/
-        row-gap: 1rem;
         margin: 0 auto;
     }
 

@@ -4,9 +4,9 @@ import getSortedPosts from "../../../utils/getSortedPosts";
 import Layout from "../../../layouts/Layout.astro";
 import PodcastTrigger from "@/components/react/PodcastTrigger";
 import { Image } from "astro:assets";
-import {PlayIcon, ChevronRightIcon, ExternalLinkIcon} from "lucide-react"
-const podcasts = await getCollection("podcasts");
 const { locale } = Astro.params;
+import {PlayIcon, ChevronRightIcon, ExternalLinkIcon} from "lucide-react"
+const podcasts = await getCollection("podcasts", entry => entry.data.draft !== true && entry.data.locale === locale);
 // const sortedPost = getSortedPosts(posts, locale);
 ---
 
