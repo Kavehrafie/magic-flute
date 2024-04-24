@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/layouts/Layout.astro";
 import PodcastTrigger from "@/components/react/PodcastTrigger";
 import { Image } from "astro:assets";
-import { PlayIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-react";
+import { PlayIcon, ChevronRightIcon, ExternalLinkIcon, InfoIcon, BookmarkIcon } from "lucide-react";
 import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
 import EventWrapper from "../../components/react/EventWrapper";
 const { locale = DEFAULT_LOCALE, modal } = Astro.params;
@@ -12,6 +12,7 @@ const podcasts = await getCollection(
   "podcasts",
   entry => entry.data.draft !== true && entry.data.locale === locale
 );
+
 const { SITE } = import.meta.env;
 const events = await getCollection('events', entry => new Date(entry.data.eventDate) >= new Date());
 const sortedEvents = events.sort((a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate));
@@ -103,10 +104,16 @@ const params = new URLSearchParams(url.search)
     </div>
   </main>
   { params.get('modal') && <EventWrapper client:load title={remarkPluginFrontmatter.title}>
+
+    <div class="py-4">
+
     <Content></Content>
+    </div>
 
     <div class="flex gap-4">
-    <a href={remarkPluginFrontmatter.readingLink} target="_blank">Get reading </a>
+    <a href={remarkPluginFrontmatter.readingLink} target="_blank">
+    <InfoIcon className="w-10 h-10"></InfoIcon>
+    </a>
     <a href={remarkPluginFrontmatter.meetingLink} target="_blank">Save your seat </a>
   </div>
   </EventWrapper> }
