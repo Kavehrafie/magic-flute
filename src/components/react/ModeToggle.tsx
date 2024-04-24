@@ -3,11 +3,11 @@ import { Moon, Sun } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu,
+  DropdownMenu, DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export function ModeToggle() {
   const [theme, setThemeState] = React.useState<
@@ -38,15 +38,16 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setThemeState("theme-light")}>
+        <DropdownMenuCheckboxItem
+          checked={theme === "theme-light"}
+          onClick={() => setThemeState("theme-light")}>
           Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setThemeState("dark")}>
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={theme === "dark"}
+          onClick={() => setThemeState("dark")}>
           Dark
-        </DropdownMenuItem>
-        {/*<DropdownMenuItem onClick={() => setThemeState("system")}>*/}
-        {/*  System*/}
-        {/*</DropdownMenuItem>*/}
+        </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

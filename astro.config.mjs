@@ -9,6 +9,9 @@ import react from "@astrojs/react";
 
 export default defineConfig({
   site: import.meta.env.SITE || "https://rumination.netlify.app/",
+  image: {
+    domains: ["rumination.netlify.app", "d38ruy7cl1ctq5.cloudfront.net"]
+  },
   vite: {
     server: {
       watch: {

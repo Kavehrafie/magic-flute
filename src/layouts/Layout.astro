@@ -80,12 +80,10 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
   <body class="subpixel-antialiased grid-container bg-background">
     <Header {...{locale, showProgressBar}} />
     <slot name="featured"/>
-
+    <slot  />
     <div class="breakout sticky bottom-5 py-6">
       <AudioWrapper client:load transition:persist></AudioWrapper>
     </div>
-
-    <slot  />
     <Footer />
   </body>
 </html>

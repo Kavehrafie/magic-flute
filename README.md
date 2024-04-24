@@ -1,4 +1,5 @@
 # Astro Web Host
 
 ## Todo list
-- [ ] audio player
+- [x] audio player
+- [ ] search functionality

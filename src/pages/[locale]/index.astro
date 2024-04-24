@@ -1,81 +1,180 @@
 ---
 import { getCollection } from "astro:content";
+import { Button } from "@/components/ui/button";
 import Layout from "@/layouts/Layout.astro";
 import PodcastTrigger from "@/components/react/PodcastTrigger";
 import { Image } from "astro:assets";
 import { PlayIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-react";
-const { locale } = Astro.params;
+import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
+import EventWrapper from "../../components/react/EventWrapper";
+const { locale = DEFAULT_LOCALE, modal } = Astro.params;
 const podcasts = await getCollection(
   "podcasts",
   entry => entry.data.draft !== true && entry.data.locale === locale
 );
+const { SITE } = import.meta.env;
+const events = await getCollection('events', entry => new Date(entry.data.eventDate) >= new Date());
+const sortedEvents = events.sort((a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate));
+const { headings, Content, remarkPluginFrontmatter } = await sortedEvents[0].render()
+const request = Astro.request
+const url = new URL(request.url)
+const params = new URLSearchParams(url.search)
+
 ---
+
+
 
 <Layout {locale}>
 
+  <div class="fullwidth grid gap-4 grid-rows-[1fr_auto] grid-cols-2 justify-center items-center">
 
-  <Image
-    class="fullwidth"
-    src="https://d38ruy7cl1ctq5.cloudfront.net/podcast/juanogorman-ciudaddemexico-1949-2000x1000.jpg"
-    width={2000}
-    height={1000}
-    alt="juan ogorman"
-    slot="featured"
-  />
-  <p class="breakout text-center text-xs" slot="featured">
-    Juan O’Gorman, “La Ciudad de México”, 1949. Museo de Arte Moderno, Mexico
-    City. © 2021, ProLitteris, Zurich
-  </p>
+      <Image
+        id="hero-image"
+        class="col-start-1 col-span-2 row-start-1"
+        src={sortedEvents[0].data.featuredImage.src}
+        width={2000}
+        height={1000}
+        alt="juan ogorman"
+        slot="featured"
+      />
 
+    <p class="breakout text-center text-xs col-span-2 row-start-2" slot="featured">
+      {sortedEvents[0].data.featuredImage.alt}
+    </p>
 
+    <section id="hero-section" class="col-start-1 col-span-2 md:col-start-2 md:col-span-1 row-start-1 rtl:font-fa-serif z-[1] p-4 md:p-0">
+      <p class="text-lg font-black"> {useTranslations(locale)("session")} |
+        {sortedEvents[0].data.eventDate.toLocaleDateString(locale, {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </p>
+      <h2 class="text-5xl font-bold">{sortedEvents[0].data.title}</h2>
 
-    <main class="grid-container fullwidth min-h-svh py-6" >
-      <div class="grid grid-cols-1 space-y-4">
-        {
-          podcasts.map(post => (
-            <section class="relative m-2 flex grid grid-cols-[300px_1fr_3ch] grid-rows-[8em_1fr] items-center gap-2 overflow-hidden overflow-hidden rounded-2xl border">
-              <Image
-                class=" cover-object col-span-1 col-start-1 row-span-2 row-start-1"
-                src={`${post.data.featuredImage.src}&width=400&height=300`}
-                width={300}
-                height={250}
-                alt={post.data.title}
-              />
+      <!--<Button className="max-w-42 my-4 ml-0 mr-auto uppercase" client:visible-->
+      <!--&gt;-->
+      <a href="?modal=event">
 
-              <PodcastTrigger
-                audio={{ src: post.data.url, title: post.data.title }}
-                client:load
-                className="opacity-0 hover:opacity-100 transition-opacity w-full h-full bg-foreground/15 col-start-1 row-start-1 col-span-1 row-span-2 flex justify-center items-center"
-              >
-                <span class="rounded-full bg-background/50 p-4">
-                  <PlayIcon className="w-10 h-10" />
-                </span>
-              </PodcastTrigger>
+        {useTranslations(locale)("action.add-to-calendar")}
+      </a>
+      <!--</Button>-->
 
-              <h2 class=" px-4 py-6 text-4xl rtl:font-fa-sans rtl:font-bold">
+    </section>
+  </div>
+  <main class="grid-container fullwidth min-h-svh py-6">
+    <div class="grid grid-cols-1 space-y-4">
+      {
+        podcasts.map(post => (
+          <section class="cast-card">
+            <Image
+              class="cast-card--image max-h-80 w-full object-cover"
+              src={`${post.data.featuredImage.src}&width=500&height=500`}
+              width={300}
+              height={300}
+              alt={post.data.title}
+            />
+
+            <PodcastTrigger
+              audio={{ src: post.data.url, title: post.data.title }}
+              client:load
+              className="cast-card--action opacity-0 hover:opacity-100 transition-opacity w-full h-full bg-foreground/15  flex justify-center items-center"
+            >
+              <span class="rounded-full bg-background/50 p-4">
+                <PlayIcon className="w-10 h-10" />
+              </span>
+            </PodcastTrigger>
+
+            <a class="cast-card--title" href={`/${locale}/podcasts/${post.slug}`}>
+              <h2 class="px-4 py-6 text-4xl rtl:font-fa-sans rtl:font-bold">
                 {post.data.title}
               </h2>
+            </a>
 
-              <div class="mb-auto mt-0 flex w-full items-start justify-end p-4 text-left">
-                <a
-                  class="flex  rounded-lg px-4 py-2 text-sm"
-                  href={`podcasts/${post.slug}`}
-                >
-                  <ExternalLinkIcon class="h-6 w-6" />
-                  <span class="sr-only">details</span>
-                </a>
-              </div>
+            <p class="cast-card--description">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Accusamus at delectus dolorem, earum enim in iusto magni minima
+              necessitatibus quam ratione repellendus sint totam. Eos et fugit
+              laborum mollitia nostrum!
+            </p>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+  { params.get('modal') && <EventWrapper client:load title={remarkPluginFrontmatter.title}>
+    <Content></Content>
 
-              <p class="col-span-2">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Accusamus at delectus dolorem, earum enim in iusto magni minima
-                necessitatibus quam ratione repellendus sint totam. Eos et fugit
-                laborum mollitia nostrum!
-              </p>
-            </section>
-          ))
-        }
-      </div>
-    </main>
-
+    <div class="flex gap-4">
+    <a href={remarkPluginFrontmatter.readingLink} target="_blank">Get reading </a>
+    <a href={remarkPluginFrontmatter.meetingLink} target="_blank">Save your seat </a>
+  </div>
+  </EventWrapper> }
 </Layout>
+
+<script is:inline>
+
+  function updateOpacityOnScroll() {
+    const heroImage = document.getElementById("hero-image");
+    const heroSection = document.getElementById("hero-section");
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    const desiredOpacity = 1 - scrollPosition / 400; // Adjust the divisor to control the rate of opacity change
+    if (document.getElementById("hero-image")) {
+      heroImage.style.opacity = Math.max(0.4, Math.min(1, desiredOpacity)); // Ensure opacity stays between 0 and 1
+    }
+    if (document.getElementById("hero-section")) {
+    heroSection.style.transform = `translateY(${- desiredOpacity * 80 + 80}px)`;
+    }
+
+  }
+
+  let scrollPosition = 0;
+  // Add the scroll event listener to the window
+  window.addEventListener('scroll', updateOpacityOnScroll);
+
+  document.addEventListener('astro:before-preparation', (event) => {
+    console.log('astro:before-preparation');
+    scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+  //   window.removeEventListener("scroll", updateOpacityOnScroll);
+  })
+  // document.addEventListener('astro:page-load', (event) => {
+
+    document.addEventListener('astro:after-swap', (event) => {
+      console.log('astro:after-swap');
+      window.scrollTo(0, scrollPosition);
+    //   window.addEventListener("scroll", updateOpacityOnScroll);
+    })
+
+  //     updateOpacityOnScroll();
+    
+  // })
+</script>
+
+<style>
+  .cast-card {
+    @apply m-2 grid items-center gap-2 overflow-hidden rounded-2xl border lg:gap-4 rtl:flex-row-reverse;
+      grid-template-areas: "image image"
+                            "title title"
+                            "desc desc";
+
+    @screen md {
+      grid-template-areas: "title image"
+                            "desc image";
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr 300px;
+    }
+  }
+
+  .cast-card--description {
+    @apply px-4 py-6;
+      grid-area: desc;
+  }
+
+  .cast-card--title {
+    grid-area: title;
+  }
+
+  .cast-card--image, .cast-card--action {
+    grid-area: image;
+  }
+</style>

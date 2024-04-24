@@ -17,11 +17,15 @@ export const ui = {
     'nav.posts': 'بلاگ',
     'nav.about': 'درباره',
     'nav.podcast': 'پادکست',
+    'action.add-to-calendar': 'به تقویم اضافه کن',
+    'session': 'نشست',
   },
   en: {
     'nav.posts': 'Posts',
     'nav.about': 'About',
     'nav.podcast': 'Podcast',
+    'action.add-to-calendar': 'Add to Calendar',
+    'session': 'Session',
   }
 }
 
