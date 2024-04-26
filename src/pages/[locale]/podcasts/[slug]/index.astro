@@ -34,9 +34,9 @@ export const prerender = true;
 ---
 
 <Layout {locale} >
-  <a href="/fa/podcasts/new-episode-1" >episode 1</a>
-  <a href="/fa/podcasts/new-episode-2" >episode 2</a>
-
   <PodcastTrigger audio={{src: remarkPluginFrontmatter.url, title:remarkPluginFrontmatter.title}} client:load />
-  <Content />
+
+  <article class="my-6">
+    <Content />
+  </article>
 </Layout>

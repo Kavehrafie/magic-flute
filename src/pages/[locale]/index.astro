@@ -4,9 +4,16 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/layouts/Layout.astro";
 import PodcastTrigger from "@/components/react/PodcastTrigger";
 import { Image } from "astro:assets";
-import { PlayIcon, ChevronRightIcon, ExternalLinkIcon, InfoIcon, BookmarkIcon } from "lucide-react";
+import {
+  PlayIcon,
+  ChevronRightIcon,
+  ExternalLinkIcon,
+  InfoIcon,
+  BookmarkIcon,
+} from "lucide-react";
 import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
 import EventWrapper from "../../components/react/EventWrapper";
+
 const { locale = DEFAULT_LOCALE, modal } = Astro.params;
 const podcasts = await getCollection(
   "podcasts",
@@ -14,53 +21,63 @@ const podcasts = await getCollection(
 );
 
 const { SITE } = import.meta.env;
-const events = await getCollection('events', entry => new Date(entry.data.eventDate) >= new Date());
-const sortedEvents = events.sort((a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate));
-const { headings, Content, remarkPluginFrontmatter } = await sortedEvents[0].render()
-const request = Astro.request
-const url = new URL(request.url)
-const params = new URLSearchParams(url.search)
-
+const events = await getCollection(
+  "events",
+  entry => new Date(entry.data.eventDate) >= new Date()
+);
+const sortedEvents = events.sort(
+  (a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate)
+);
+const { headings, Content, remarkPluginFrontmatter } =
+  await sortedEvents[0].render();
+const request = Astro.request;
+const url = new URL(request.url);
+const params = new URLSearchParams(url.search);
 ---
 
-
-
 <Layout {locale}>
+  <div
+    class="fullwidth grid grid-cols-2 grid-rows-[1fr_auto] items-center justify-center gap-4"
+  >
+    <Image
+      id="hero-image"
+      class="col-span-2 col-start-1 row-start-1 min-h-svh object-cover"
+      src={sortedEvents[0].data.featuredImage.src}
+      width={2000}
+      height={1000}
+      alt="juan ogorman"
+      slot="featured"
+    />
 
-  <div class="fullwidth grid gap-4 grid-rows-[1fr_auto] grid-cols-2 justify-center items-center">
-
-      <Image
-        id="hero-image"
-        class="col-start-1 col-span-2 row-start-1"
-        src={sortedEvents[0].data.featuredImage.src}
-        width={2000}
-        height={1000}
-        alt="juan ogorman"
-        slot="featured"
-      />
-
-    <p class="breakout text-center text-xs col-span-2 row-start-2" slot="featured">
+    <p
+      class="breakout col-span-2 row-start-2 text-center text-xs"
+      slot="featured"
+    >
       {sortedEvents[0].data.featuredImage.alt}
     </p>
 
-    <section id="hero-section" class="col-start-1 col-span-2 md:col-start-2 md:col-span-1 row-start-1 rtl:font-fa-serif z-[1] p-4 md:p-0">
-      <p class="text-lg font-black"> {useTranslations(locale)("session")} |
-        {sortedEvents[0].data.eventDate.toLocaleDateString(locale, {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
+    <section
+      id="hero-section"
+      class="z-[1] col-span-2 col-start-1 row-start-1 p-4 md:col-span-1 md:col-start-2 md:p-0 rtl:font-fa-serif"
+    >
+      <p class="text-lg font-black">
+        {useTranslations(locale)("session")} |
+        {
+          sortedEvents[0].data.eventDate.toLocaleDateString(locale, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
       </p>
       <h2 class="text-5xl font-bold">{sortedEvents[0].data.title}</h2>
 
-      <!--<Button className="max-w-42 my-4 ml-0 mr-auto uppercase" client:visible-->
-      <!--&gt;-->
-      <a href="?modal=event">
-
+      <a href="?modal=event" >
+      <Button className="max-w-42 my-4 ml-0 mr-auto uppercase" client:visible
+         >
         {useTranslations(locale)("action.add-to-calendar")}
+      </Button>
       </a>
-      <!--</Button>-->
-
     </section>
   </div>
   <main class="grid-container fullwidth min-h-svh py-6">
@@ -70,9 +87,9 @@ const params = new URLSearchParams(url.search)
           <section class="cast-card">
             <Image
               class="cast-card--image max-h-80 w-full object-cover"
-              src={`${post.data.featuredImage.src}&width=500&height=500`}
-              width={300}
-              height={300}
+              src={`${post.data.featuredImage.src}&width=400&height=400&watermark=rumination.png`}
+              width={400}
+              height={400}
               alt={post.data.title}
             />
 
@@ -86,102 +103,108 @@ const params = new URLSearchParams(url.search)
               </span>
             </PodcastTrigger>
 
-            <a class="cast-card--title" href={`/${locale}/podcasts/${post.slug}`}>
+            <a
+              class="cast-card--title"
+              href={`/${locale}/podcasts/${post.slug}`}
+            >
               <h2 class="px-4 py-6 text-4xl rtl:font-fa-sans rtl:font-bold">
                 {post.data.title}
               </h2>
             </a>
 
             <p class="cast-card--description">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus at delectus dolorem, earum enim in iusto magni minima
-              necessitatibus quam ratione repellendus sint totam. Eos et fugit
-              laborum mollitia nostrum!
+              {post.data.abstract}
             </p>
           </section>
         ))
       }
     </div>
   </main>
-  { params.get('modal') && <EventWrapper client:load title={remarkPluginFrontmatter.title}>
-
-    <div class="py-4">
-
-    <Content></Content>
-    </div>
-
-    <div class="flex gap-4">
-    <a href={remarkPluginFrontmatter.readingLink} target="_blank">
-    <InfoIcon className="w-10 h-10"></InfoIcon>
-    </a>
-    <a href={remarkPluginFrontmatter.meetingLink} target="_blank">Save your seat </a>
-  </div>
-  </EventWrapper> }
+  {
+    params.get("modal") && (
+      <EventWrapper
+        links={{
+          reading: remarkPluginFrontmatter.readingLink,
+          meeting: remarkPluginFrontmatter.meetingLink
+        }}
+        title={remarkPluginFrontmatter.title}
+        {locale}
+        client:load >
+        <div class="py-4">
+          {remarkPluginFrontmatter?.abstract}
+        </div>
+      </EventWrapper>
+    )
+  }
 </Layout>
 
 <script is:inline>
-
   function updateOpacityOnScroll() {
     const heroImage = document.getElementById("hero-image");
     const heroSection = document.getElementById("hero-section");
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollPosition =
+      window.pageYOffset || document.documentElement.scrollTop;
     const desiredOpacity = 1 - scrollPosition / 400; // Adjust the divisor to control the rate of opacity change
     if (document.getElementById("hero-image")) {
       heroImage.style.opacity = Math.max(0.4, Math.min(1, desiredOpacity)); // Ensure opacity stays between 0 and 1
     }
     if (document.getElementById("hero-section")) {
-    heroSection.style.transform = `translateY(${- desiredOpacity * 80 + 80}px)`;
+      heroSection.style.transform = `translateY(${-desiredOpacity * 80 + 80}px)`;
     }
-
   }
 
   let scrollPosition = 0;
   // Add the scroll event listener to the window
-  window.addEventListener('scroll', updateOpacityOnScroll);
+  window.addEventListener("scroll", updateOpacityOnScroll);
 
-  document.addEventListener('astro:before-preparation', (event) => {
-    console.log('astro:before-preparation');
+  document.addEventListener("astro:before-preparation", event => {
+    console.log("astro:before-preparation");
     scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-  //   window.removeEventListener("scroll", updateOpacityOnScroll);
-  })
+    //   window.removeEventListener("scroll", updateOpacityOnScroll);
+  });
   // document.addEventListener('astro:page-load', (event) => {
 
-    document.addEventListener('astro:after-swap', (event) => {
-      console.log('astro:after-swap');
-      window.scrollTo(0, scrollPosition);
+  document.addEventListener("astro:after-swap", event => {
+    console.log("astro:after-swap");
+    window.scrollTo(0, scrollPosition);
     //   window.addEventListener("scroll", updateOpacityOnScroll);
-    })
+  });
 
   //     updateOpacityOnScroll();
-    
+
   // })
 </script>
 
 <style>
   .cast-card {
     @apply m-2 grid items-center gap-2 overflow-hidden rounded-2xl border lg:gap-4 rtl:flex-row-reverse;
-      grid-template-areas: "image image"
-                            "title title"
-                            "desc desc";
+    grid-template-areas:
+      "image image"
+      "title title"
+      "desc desc";
 
     @screen md {
-      grid-template-areas: "title image"
-                            "desc image";
-      grid-template-rows: 1fr;
-      grid-template-columns: 1fr 300px;
+      grid-template-areas:
+        "title image"
+        "desc image";
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr minmax(300px, 400px);
     }
   }
 
   .cast-card--description {
     @apply px-4 py-6;
-      grid-area: desc;
+    grid-area: desc;
   }
 
   .cast-card--title {
     grid-area: title;
+      text-align: center;
+      @apply md:text-left md:rtl:text-right;
   }
 
-  .cast-card--image, .cast-card--action {
+  .cast-card--image,
+  .cast-card--action {
     grid-area: image;
   }
 </style>
