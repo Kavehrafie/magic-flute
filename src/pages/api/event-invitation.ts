@@ -3,8 +3,7 @@ import { mailjet } from "@lib/smtp.ts";
 
 export const POST:  APIRoute = async ({ request }) => {
   const form = await request.formData();
-  const links = form.get('links')
-
+  const links = JSON.parse(form.get('links') as string)
 
   const response = mailjet
     .post("send", {'version': 'v3.1'})
@@ -23,10 +22,10 @@ export const POST:  APIRoute = async ({ request }) => {
           ],
           "Subject": "Upcoming Event Invitation",
           "TextPart": "Dear Friend, welcome to rumination podcast! The details of the upcoming event are as follows",
-          "HTMLPart": "<h3>Dear Friend, welcome to <a href=\"https://www/rumination.netlify.com/\">rumination podcast</a>!</h3><br /> " +
+          "HTMLPart": "<h3>Dear Friend, welcome to <a href=\"https://www.rumination.netlify.com/\">rumination podcast</a>!</h3><br /> " +
             "The details of the upcoming event are as follows: " +
-            `<a href='${links?.reading}'>📘 Reading link</a> <br />` +
-            `<a href='${links?.meeting}'>📇 Meeting link </a> <br />`
+            `<a href="${links?.reading}">📘 Reading link</a> <br />` +
+            `<a href="${links?.meeting}">📇 Meeting link </a> <br />`
         }
       ]
     })
