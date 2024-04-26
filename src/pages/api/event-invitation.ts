@@ -33,12 +33,6 @@ export const POST:  APIRoute = async ({ request }) => {
   response
     .then((result) => {
       console.log(result.body)
-      return new Response(JSON.stringify({
-          message: "event.invitation.success"
-        }), {
-          status: 200
-        }
-      )
     })
     .catch((err) => {
       console.log(err.statusCode)
@@ -50,5 +44,10 @@ export const POST:  APIRoute = async ({ request }) => {
       )
     })
 
-
+  return new Response(JSON.stringify({
+      message: "event.invitation.success"
+    }), {
+      status: 200
+    }
+  )
 }
