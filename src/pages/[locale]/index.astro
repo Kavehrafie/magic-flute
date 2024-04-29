@@ -28,8 +28,9 @@ const events = await getCollection(
 const sortedEvents = events.sort(
   (a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate)
 );
+
 const { headings, Content, remarkPluginFrontmatter } =
-  await sortedEvents[0].render();
+  await sortedEvents[0]?.render();
 const request = Astro.request;
 const url = new URL(request.url);
 const params = new URLSearchParams(url.search);
@@ -60,6 +61,8 @@ const params = new URLSearchParams(url.search);
       id="hero-section"
       class="z-[1] col-span-2 col-start-1 row-start-1 p-4 md:col-span-1 md:col-start-2 md:p-0 rtl:font-fa-serif"
     >
+      {
+        sortedEvents[0] &&
       <p class="text-lg font-black">
         {useTranslations(locale)("session")} |
         {
@@ -78,6 +81,7 @@ const params = new URLSearchParams(url.search);
         {useTranslations(locale)("action.add-to-calendar")}
       </Button>
       </a>
+      }
     </section>
   </div>
   <main class="grid-container fullwidth min-h-svh py-6">
