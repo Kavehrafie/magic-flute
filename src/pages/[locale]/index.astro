@@ -86,10 +86,10 @@ const params = new URLSearchParams(url.search);
         podcasts.map(post => (
           <section class="cast-card">
             <Image
-              class="cast-card--image max-h-80 w-full object-cover"
-              src={`${post.data.featuredImage.src}&width=400&height=400&watermark=rumination.png`}
-              width={400}
-              height={400}
+              class="cast-card--image max-h-80 md:max-h-none w-full object-cover"
+              src={`${post.data.featuredImage.src}&width=${post.data.featuredImage.width}&height=${post.data.featuredImage.height}`}
+              width={post.data.featuredImage.width}
+              height={post.data.featuredImage.height}
               alt={post.data.title}
             />
 
@@ -182,22 +182,23 @@ const params = new URLSearchParams(url.search);
       "image image"
       "title title"
       "desc desc";
-
+    max-height: 500px;
     @screen md {
       grid-template-areas:
         "title image"
         "desc image";
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: auto 1fr;
       grid-template-columns: 1fr minmax(300px, 400px);
     }
   }
 
   .cast-card--description {
-    @apply px-4 py-6;
+    @apply px-4 py-6 mb-auto mt-0;
     grid-area: desc;
   }
 
   .cast-card--title {
+    @apply mt-auto mb-0;
     grid-area: title;
       text-align: center;
       @apply md:text-left md:rtl:text-right;
