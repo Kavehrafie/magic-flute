@@ -3,10 +3,10 @@ pubDatetime: 2022-09-23T15:22:00Z
 title: "رشدزدایی نشست اول : جیسون هیکل و سیاست ضداستعماری رشدزدایی"
 slug: degrowth-jason-hickel
 featuredImage:
-  src: https://d38ruy7cl1ctq5.cloudfront.net/podcast/DONOVAN_inst_2014_v03-HighResolution300dpi.width-2000.jpg?format=auto
-  alt: Tara Donovan, 2014, The Pace Gallery, NY
-  width: 500
-  height: 800
+    src: "https://d38ruy7cl1ctq5.cloudfront.net/podcast/DONOVAN_inst_2014_v03-HighResolution300dpi.width-2000.jpg?format=auto"
+    alt: Tara Donovan, 2014, The Pace Gallery, NY
+    width: 500
+    height: 800
 draft: false
 locale: fa
 url: https://d12qii9tny95ze.cloudfront.net/podcast/msg-1001869990599-1491.ogg
