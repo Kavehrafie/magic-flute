@@ -29,8 +29,10 @@ const sortedEvents = events.sort(
   (a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate)
 );
 
-const { headings, Content, remarkPluginFrontmatter } =
-  await sortedEvents[0]?.render();
+const {  remarkPluginFrontmatter } =
+  await sortedEvents[0]?.render() || {};
+
+
 const request = Astro.request;
 const url = new URL(request.url);
 const params = new URLSearchParams(url.search);
@@ -40,7 +42,7 @@ const params = new URLSearchParams(url.search);
   <div
     class="fullwidth grid grid-cols-2 grid-rows-[1fr_auto] items-center justify-center gap-4"
   >
-    <Image
+    {sortedEvents[0] && <Image
       id="hero-image"
       class="col-span-2 col-start-1 row-start-1 min-h-svh object-cover"
       src={sortedEvents[0].data.featuredImage.src}
@@ -48,13 +50,13 @@ const params = new URLSearchParams(url.search);
       height={1000}
       alt="juan ogorman"
       slot="featured"
-    />
+    />}
 
     <p
       class="breakout col-span-2 row-start-2 text-center text-xs"
       slot="featured"
     >
-      {sortedEvents[0].data.featuredImage.alt}
+      {sortedEvents[0] && sortedEvents[0].data.featuredImage.alt}
     </p>
 
     <section
@@ -66,14 +68,14 @@ const params = new URLSearchParams(url.search);
       <p class="text-lg font-black">
         {useTranslations(locale)("session")} |
         {
-          sortedEvents[0].data.eventDate.toLocaleDateString(locale, {
+          sortedEvents[0] && sortedEvents[0].data.eventDate.toLocaleDateString(locale, {
             year: "numeric",
             month: "long",
             day: "numeric",
           })
         }
       </p>
-      <h2 class="text-5xl font-bold">{sortedEvents[0].data.title}</h2>
+      <h2 class="text-5xl font-bold">{sortedEvents[0] && sortedEvents[0].data.title}</h2>
 
       <a href="?modal=event" >
       <Button className="max-w-42 my-4 ml-0 mr-auto uppercase" client:visible

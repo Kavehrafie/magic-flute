@@ -9,7 +9,7 @@ featuredImage:
   alt: Between Fury and Love
   width: 716
   height: 1309
-draft: false
+draft: true
 locale: fa
 tags:
   - war
