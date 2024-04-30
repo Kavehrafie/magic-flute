@@ -23,7 +23,7 @@ const podcasts = await getCollection(
 const { SITE } = import.meta.env;
 const events = await getCollection(
   "events",
-  entry => new Date(entry.data.eventDate) >= new Date()
+  entry => new Date(entry.data.eventDate) >= new Date() && entry.data.locale === locale
 );
 const sortedEvents = events.sort(
   (a, b) => new Date(b.data.eventDate) - new Date(a.data.eventDate)
@@ -91,7 +91,7 @@ const params = new URLSearchParams(url.search);
           <section class="cast-card">
             <Image
               class="cast-card--image max-h-80 md:max-h-none w-full object-cover"
-              src={`${post.data.featuredImage.src}&width=${post.data.featuredImage.width}&height=${post.data.featuredImage.height}`}
+              src={`${post.data.featuredImage.src}?format=auto&width=${post.data.featuredImage.width}&height=${post.data.featuredImage.height}`}
               width={post.data.featuredImage.width}
               height={post.data.featuredImage.height}
               alt={post.data.title}
