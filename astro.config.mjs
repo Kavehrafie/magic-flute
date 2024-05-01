@@ -10,7 +10,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: import.meta.env.SITE || "https://rumination.netlify.app/",
   image: {
-    domains: ["rumination.netlify.app", "d38ruy7cl1ctq5.cloudfront.net"]
+    domains: ["d38ruy7cl1ctq5.cloudfront.net"]
   },
   vite: {
     server: {
@@ -26,7 +26,6 @@ export default defineConfig({
   output: "server",
   adapter: netlify({
     edgeMiddleware: true,
-    imageCDN: false,
   }),
   integrations: [react(), tailwind({
     applyBaseStyles: false
