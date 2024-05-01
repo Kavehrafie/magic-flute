@@ -7,47 +7,61 @@ import type { Languages } from "@/lib/i18n";
 import { getImage } from "astro:assets";
 import { SITE } from "@/config";
 
+const fetchFonts = async () => {
+  // Regular Font
+  const fontFileRegular = await fetch(
+    "https://www.1001fonts.com/download/font/ibm-plex-mono.regular.ttf"
+  );
+  const fontRegular: ArrayBuffer = await fontFileRegular.arrayBuffer();
+
+  // Bold Font
+  const fontFileBold = await fetch(
+    "https://cdn.jsdelivr.net/fontsource/fonts/montserrat-alternates@latest/latin-600-normal.ttf"
+  );
+  const fontBold: ArrayBuffer = await fontFileBold.arrayBuffer();
+
+  const fontFileFarsi = await fetch(
+    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/latin-400-normal.ttf"
+  );
+
+  const fontFarsi: ArrayBuffer = await fontFileFarsi.arrayBuffer();
+
+  const fontFileFarsiBold = await fetch(
+    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/latin-400-normal.ttf"
+  );
+
+  const fontFarsiBold: ArrayBuffer = await fontFileFarsiBold.arrayBuffer();
+
+  return { fontRegular, fontBold, fontFarsi, fontFarsiBold };
+};
+
+const { fontRegular, fontBold, fontFarsi, fontFarsiBold } = await fetchFonts();
+
 const SatoriOptions: SatoriOptions = {
   width: 640,
   height: 480,
   fonts: [
     {
       name: "Montserrat",
-      data: await readFile(
-        `${process.cwd()}/public/fonts/MontserratAlternates-Regular.ttf`
-      ),
+      data: fontRegular,
       style: "normal",
       weight: 400,
     },
     {
       name: "Montserrat",
-      data: await readFile(
-        `${process.cwd()}/public/fonts/MontserratAlternates-Italic.ttf`
-      ),
-      style: "italic",
-      weight: 400,
-    },
-    {
-      name: "Montserrat",
-      data: await readFile(
-        `${process.cwd()}/public/fonts/MontserratAlternates-Bold.ttf`
-      ),
+      data: fontBold,
       style: "normal",
       weight: 600,
     },
     {
       name: "Vazirmatn",
-      data: await readFile(
-        `${process.cwd()}/public/fonts/Vazirmatn-Regular.ttf`
-      ),
+      data: fontFarsi,
       style: "normal",
       weight: 400,
     },
     {
       name: "Vazirmatn",
-      data: await readFile(
-        `${process.cwd()}/public/fonts/Vazirmatn-ExtraBold.ttf`
-      ),
+      data: fontFarsiBold,
       style: "normal",
       weight: 800,
     },
