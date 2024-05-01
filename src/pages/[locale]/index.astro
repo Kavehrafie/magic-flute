@@ -36,6 +36,12 @@ const {  remarkPluginFrontmatter } =
 const request = Astro.request;
 const url = new URL(request.url);
 const params = new URLSearchParams(url.search);
+const {
+  geo: { city },
+} = Astro.locals.netlify.context;
+
+console.log(Astro.locals.netlify);
+
 ---
 
 <Layout {locale}>

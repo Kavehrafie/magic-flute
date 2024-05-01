@@ -7,3 +7,9 @@
 [dev]
   command = "astro dev"
   targetPort = 4321
+
+[[plugins]]
+  package = "@netlify/plugin-emails"
+
+[images]
+	remote_images = ["https://d38ruy7cl1ctq5.cloudfront.net/.*"]

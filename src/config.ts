@@ -1,11 +1,13 @@
 import type { Site, SocialObjects } from "./types";
 
 export const SITE: Site = {
-  website: "https://astro-paper.pages.dev/", // replace this with your deployed domain
-  author: "Sat Naing",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
-  title: "Rumination",
-  ogImage: "astropaper-og.jpg",
+  website: import.meta.env.SITE || "http://localhost:4321/", // replace this with your deployed domain
+  author: import.meta.env.SITE_NAME || "Rumination.netlify.app",
+  desc:
+    import.meta.env.SITE_DESCRIPTION ||
+    "Rumination is an online podcast that explores human stuggle and the power of ideas.",
+  title: import.meta.env.SITE_TITLE || "Rumination",
+  ogImage: "hero.png",
   lightAndDarkMode: true,
   postPerPage: 3,
 };
@@ -130,7 +132,7 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "Telegram",
-    href: "https://github.com/satnaing/astro-paper",
+    href: "https://t.me/graeberians",
     linkTitle: `${SITE.title} on Telegram`,
     active: false,
   },
