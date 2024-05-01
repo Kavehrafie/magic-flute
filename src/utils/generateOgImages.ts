@@ -5,6 +5,7 @@ import { HomePageEn, HomePageFa } from "./og-templates/HomePage";
 
 import type { Languages } from "@/lib/i18n";
 import { getImage } from "astro:assets";
+import { PostPageEn } from "./og-templates/PostPage";
 
 const fetchFonts = async () => {
   // Regular Font
@@ -20,13 +21,13 @@ const fetchFonts = async () => {
   const fontBold: ArrayBuffer = await fontFileBold.arrayBuffer();
 
   const fontFileFarsi = await fetch(
-    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/latin-400-normal.ttf"
+    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/arabic-400-normal.ttf"
   );
 
   const fontFarsi: ArrayBuffer = await fontFileFarsi.arrayBuffer();
 
   const fontFileFarsiBold = await fetch(
-    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/latin-400-normal.ttf"
+    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/arabic-400-normal.ttf"
   );
 
   const fontFarsiBold: ArrayBuffer = await fontFileFarsiBold.arrayBuffer();
@@ -94,6 +95,19 @@ export const generateOgImageHomepage = async (
   );
 
   //   const sharpBuffer = await sharp(Buffer.from(svg)).toBuffer();
+
+  return svgBufferToPngBuffer(svg);
+};
+
+export const generateOgImageDynamic = async ({
+  title,
+  background,
+}: {
+  title: string;
+  background: string;
+}) => {
+  console.log(title, "|", background);
+  const svg = await satori(PostPageEn({ title, background }), SatoriOptions);
 
   return svgBufferToPngBuffer(svg);
 };

@@ -13,6 +13,12 @@ export default defineConfig({
     domains: ["d38ruy7cl1ctq5.cloudfront.net"]
   },
   vite: {
+    ssr: {
+      external: ['@resvg/resvg-js']
+    },
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"]
+    },
     server: {
       watch: {
         ignored: "**/.idea/**"

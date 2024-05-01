@@ -39,6 +39,7 @@ export async function getStaticPaths() {
   const locales = getLocales();
 
   const posts = await getCollection("blog", ({ data }) => !data?.draft);
+  
   return posts.map(post => {
     const locale = post.id.split("/")[0];
     return {
