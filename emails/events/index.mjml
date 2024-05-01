@@ -7,10 +7,10 @@
 
         <mj-divider border-color="#F45E43"></mj-divider>
 
-        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello {{name}}</mj-text>
+        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Dear friend</mj-text>
 
-        <mj-button target="_blank" href="{{url}}"> Get the readings </mj-button>
+        <mj-button target="_blank" href="{{readingLink}}"> Get the readings </mj-button>
       </mj-column>
-    </mj-section>
+  </mj-section>
   </mj-body>
 </mjml>
