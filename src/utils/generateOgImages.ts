@@ -27,7 +27,7 @@ const fetchFonts = async () => {
   const fontFarsi: ArrayBuffer = await fontFileFarsi.arrayBuffer();
 
   const fontFileFarsiBold = await fetch(
-    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/arabic-400-normal.ttf"
+    "https://cdn.jsdelivr.net/fontsource/fonts/vazirmatn@latest/arabic-600-normal.ttf"
   );
 
   const fontFarsiBold: ArrayBuffer = await fontFileFarsiBold.arrayBuffer();

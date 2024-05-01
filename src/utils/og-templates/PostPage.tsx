@@ -8,47 +8,42 @@ export function PostPageEn({
   title?: string;
   subtitle?: string;
 }) {
+  console.log(title?.split(" ")[0]);
+  const titleArray = title?.split(" ");
   return (
     <div
       dir="rtl"
       style={{
-        backgroundImage: `url(${background})`,
+        background: "rgb(24, 32, 47)",
+        backgroundImage: `url(${background}?format=jpeg&width=900)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundPositionY: "center",
+        color: "white",
+        flexDirection: "column",
+        display: "flex",
+        justifyContent: "space-between",
+        height: "100%",
+        width: "100%",
       }}
-      tw="bg-cover bg-center tracking-tighter bg-no-repeat w-full h-full flex text-white bg-zinc-900"
     >
-      <div
+      <p tw="p-4 text-lg">accessed: {new Date().toString()}</p>
+      <h2
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          fontFamily: "Vazirmatn",
+          fontWeight: 600,
+          textAlign: "right",
+          fontSize: "60px",
         }}
       >
-        <h1
-          style={{
-            fontFamily: "Vazirmatn",
-            fontSize: "40px",
-            color: "red",
-            fontWeight: "bold",
-            lineHeight: "52px",
-            letterSpacing: "-.02em",
-            textAlign: "center",
-          }}
-          lang="fa-IR"
-        >
-          {title || "Rumination"}
-        </h1>
-        {subtitle && <h3 style={{ fontSize: "32px" }}>{subtitle}</h3>}
-      </div>
-      <p
-        style={{
-          fontSize: "24px",
-          position: "absolute",
-          top: "10px",
-          right: "50px",
-        }}
+        ... {titleArray?.slice(0, 2).reverse().join(" ")}
+      </h2>
+      <h1
+        tw="p-4 text-2xl text-red-500"
+        style={{ fontFamily: "Montserrat", fontWeight: 600 }}
       >
-        {background}
-      </p>
+        Rumination
+      </h1>
     </div>
   );
 }

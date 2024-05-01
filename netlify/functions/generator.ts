@@ -23,6 +23,7 @@ exports.handler = async function (event, context) {
         headless: true,
         // The optimum size for OG images.
         defaultViewport: {height: 630, width: 1200},
+        ignoreDefaultArgs: ['--disable-extensions']
     })
 
     let page = await browser.newPage()
