@@ -46,8 +46,8 @@ export const getOgImagePath = (filename: string = "Default Value") => {
   return `./${filename}/og.png`;
 };
 
-const ogImage = new URL(getOgImagePath(Astro.url.pathname), Astro.url.origin)
-  .href;
+// const ogImage = new URL(getOgImagePath(Astro.url.pathname), Astro.url.origin)
+//   .href;
 
 ---
 
@@ -86,10 +86,10 @@ const ogImage = new URL(getOgImagePath(Astro.url.pathname), Astro.url.origin)
 
 
   <!-- Open Graph / Telegram -->
-  <meta property="og:title" content={title} />
+  <!-- <meta property="og:title" content={title} />
 <meta property="og:site_name" content={SITE.title} />
 <meta property="og:description" content="Description" />
-<meta property="og:image" content={ogImage} />
+<meta property="og:image" content={ogImage} /> -->
 
 
   <slot name="meta" />

@@ -2,7 +2,6 @@ import satori, { type SatoriOptions } from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { type CollectionEntry } from "astro:content";
 import { HomePageEn, HomePageFa } from "./og-templates/HomePage";
-import sharp from "sharp";
 import { readFile } from "node:fs/promises";
 import type { Languages } from "@/lib/i18n";
 import { getImage } from "astro:assets";
