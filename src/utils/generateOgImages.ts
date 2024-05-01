@@ -43,6 +43,12 @@ const SatoriOptions: SatoriOptions = {
   ],
 };
 
+function svgBufferToPngBuffer(svg: string) {
+  const resvg = new Resvg(svg);
+  const pngData = resvg.render();
+  return pngData.asPng();
+}
+
 export const generateOgImageHomepage = async (
   locale: Languages = "en",
   title: string = "Rumination",
@@ -63,7 +69,7 @@ export const generateOgImageHomepage = async (
     SatoriOptions
   );
 
-  const sharpBuffer = await sharp(Buffer.from(svg)).toBuffer();
+  //   const sharpBuffer = await sharp(Buffer.from(svg)).toBuffer();
 
-  return sharpBuffer;
+  return svgBufferToPngBuffer(svg);
 };
