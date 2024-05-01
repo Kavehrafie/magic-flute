@@ -5,14 +5,14 @@ import { DEFAULT_LOCALE, isRtl } from "../lib/i18n";
 import Header from "@/components/common/Header.astro";
 import "@fontsource-variable/montserrat";
 import { ViewTransitions } from "astro:transitions";
-// import { Toaster } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster"
+
 // Farsi fonts
 import "@fontsource-variable/noto-sans-arabic";
 import "@fontsource-variable/vazirmatn";
 import Footer from "@components/common/Footer.astro";
 import AudioWrapper from "@/components/react/AudioWrapper";
-import { SEO } from "astro-seo";
+
 
 interface Props {
   locale: string;
@@ -29,11 +29,26 @@ const {
   title = SITE.title,
   author = SITE.author,
   description = SITE.desc,
-  ogImage = SITE.ogImage,
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   showProgressBar = false,
 } = Astro.props;
 const dir = isRtl(locale) ? "rtl" : "ltr";
+
+
+export const getOgImagePath = (filename: string = "Default Value") => {
+  if (filename.startsWith("/")) filename = filename.substring(1);
+
+  if (filename.endsWith("/"))
+    filename = filename.substring(0, filename.length - 1);
+
+  if (filename === "") filename = "Default Value";
+
+  return `./${filename}/og.png`;
+};
+
+const ogImage = new URL(getOgImagePath(Astro.url.pathname), Astro.url.origin)
+  .href;
+
 ---
 
 <script is:inline>
@@ -53,14 +68,6 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
     document.documentElement.classList[isDark ? "add" : "remove"]("dark");
   });
 
-  // if (typeof localStorage !== 'undefined') {
-  //   const observer = new MutationObserver(() => {
-  //     const isDark = document.documentElement.classList.contains('dark');
-  //     localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  //     console.log('mutation', isDark);
-  //   });
-  //   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-  // }
 </script>
 
 <html lang={locale} dir={dir}>
@@ -78,6 +85,14 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
   <meta name="author" content={author} />
 
 
+  <!-- Open Graph / Telegram -->
+  <meta property="og:title" content={title} />
+<meta property="og:site_name" content={SITE.title} />
+<meta property="og:description" content="Description" />
+<meta property="og:image" content={ogImage} />
+
+
+  <slot name="meta" />
 
   <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -91,6 +106,6 @@ const dir = isRtl(locale) ? "rtl" : "ltr";
   <AudioWrapper client:load transition:persist></AudioWrapper>
 </div>
 <Footer />
-<Toaster client:load transition:persist/>
+<Toaster client:load transition:persist />
 </body>
 </html>

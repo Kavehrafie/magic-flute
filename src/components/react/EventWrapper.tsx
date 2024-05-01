@@ -48,6 +48,7 @@ export default function EventWrapper({
 }: EventWrapperProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isInitiated, setIsInitiated] = React.useState(false);
+  const [status, setStatus] = React.useState("cancelled");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,12 +60,30 @@ export default function EventWrapper({
     if (!isInitiated) {
       setIsOpen(true);
       setIsInitiated(true);
+      setStatus("initiated");
     }
   });
 
   React.useEffect(() => {
     if (!isOpen && isInitiated) {
-      setTimeout(() => window.history.back(), 300);
+      setTimeout(() => {
+        window.history.back();
+
+        if (status === "sent") {
+          toast({
+            description: useTranslations(locale)("event.invitation.sent"),
+          });
+          setStatus("initiated");
+        }
+
+        if (status === "failed") {
+          toast({
+            description: useTranslations(locale)("event.invitation.sent"),
+            variant: "destructive",
+          });
+          setStatus("initiated");
+        }
+      }, 300);
     }
   }, [isOpen]);
 
@@ -72,14 +91,7 @@ export default function EventWrapper({
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("local", locale);
-    formData.append("links", JSON.stringify(links));
-    // const response = await fetch('/api/event-invitation', {
-    //   method: 'POST',
-    //   body: formData
-    // })
+
     const response = await fetch("/.netlify/functions/invitationEmail", {
       method: "POST",
       body: JSON.stringify({
@@ -90,8 +102,11 @@ export default function EventWrapper({
     });
 
     if (response.ok) {
-      toast({ description: useTranslations(locale)("event.invitation.sent") });
       setIsOpen(false);
+      setStatus("sent");
+    } else {
+      setIsOpen(false);
+      setStatus("failed");
     }
   }
 

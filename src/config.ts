@@ -7,7 +7,7 @@ export const SITE: Site = {
     import.meta.env.SITE_DESCRIPTION ||
     "Rumination is an online podcast that explores human stuggle and the power of ideas.",
   title: import.meta.env.SITE_TITLE || "Rumination",
-  ogImage: "hero.png",
+  ogImage: "https://rumination.netlify.app/og.png",
   lightAndDarkMode: true,
   postPerPage: 3,
 };
