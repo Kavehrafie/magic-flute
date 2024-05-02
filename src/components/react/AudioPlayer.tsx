@@ -139,7 +139,7 @@ export default function AudioPlayer({
         </Button>
       </div>
 
-      {loadingStatus}
+      {/* {loadingStatus} */}
 
       <button
         ref={playButtonRef}
@@ -147,8 +147,7 @@ export default function AudioPlayer({
         onClick={() => {
           console.log("play by click");
 
-          audioRef?.current.play();
-          setIsPlaying(true);
+          handlePlay();
           handleMute();
         }}
       >
