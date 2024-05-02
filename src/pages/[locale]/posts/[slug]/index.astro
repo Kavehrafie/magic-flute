@@ -1,8 +1,8 @@
 ---
-import { DEFAULT_LOCALE } from "../../../../lib/i18n";
+import { DEFAULT_LOCALE, useIndiaDigits, useTranslations } from "../../../../lib/i18n";
 export const prerender = true;
 
-import { getCollection } from "astro:content";
+import { getCollection, getEntryBySlug } from "astro:content";
 import { Image } from "astro:assets";
 
 import { getLocales } from "@lib/i18n";
@@ -10,30 +10,9 @@ import Layout from "@layouts/Layout.astro";
 import { Debug } from "astro:components";
 import { listIcons } from "@iconify/react";
 import { head } from "lodash-es";
-// import getSortedPosts from "@utils/getSortedPosts";
-// import { getPost } from "../../../../utils/getPosts";
+import slugify from "../../../../utils/slugify";
 
-// import { getEntry } from "astro:content"
-
-// const {locale} = Astro.locals
 const { slug } = Astro.params;
-
-// const post = await getPost(`../content/blog/${locale}/adding-new-post.md`)
-// const post2 = getEntry('blog', slug)
-//
-// const post = await getEntry('blog', slug);
-
-//
-
-// const posts = getEntry('blog', slug)
-// const posts = await Astro.glob(`/src/content/blog/**/*.md`);
-
-// const sortedPosts = getSortedPosts(posts, locale)
-
-// const {Content, url, file} = posts[0]
-// if (!post) Astro.redirect('/404')
-//
-// const {Content, headings, remarkPluginFrontmatter } = await post.render()
 
 export async function getStaticPaths() {
   const locales = getLocales();
@@ -41,12 +20,14 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data?.draft);
   
   return posts.map(post => {
-    const locale = post.id.split("/")[0];
+    const routeSegments = post.id.split("/");
+    const locale = routeSegments[0];
+
     return {
       params: {
-        slug: post.slug,
+        slug: slugify(post),
         locale:
-          post?.data.locale && locales.includes(locale)
+          post.data?.locale && locales.includes(locale)
             ? locale
             : DEFAULT_LOCALE,
       },
@@ -55,23 +36,42 @@ export async function getStaticPaths() {
   });
 }
 
+useIndiaDigits()
+
 const { locale } = Astro.params;
 const { post } = Astro.props;
-const { Content, headings, remarkPluginFrontmatter } = await post.render();
+const { Content, headings, remarkPluginFrontmatter: { readingTime, pubDatetime } } = await post.render();
+
+const authors = await Promise.all(post.data.authors?.map(async author => {
+  const {data: {firstName, lastName, slug}} = await getEntryBySlug(author.collection, author.slug);
+  return {slug, name: `${firstName} ${lastName}`}
+}));
+
 ---
 
 <Layout locale={locale} showProgressBar={true}>
-  <!--{slug} -&#45;&#45; {locale}-->
-  <!--<Debug {post} />-->
   <h1
     class="flex items-center text-center font-fa-sans text-7xl font-black leading-tight py-6"
   >
     {post.data.title}
   </h1>
 
+
+  <div class="p-2 flex items-center justify-center gap-4 text-sm text-right w-full">
+    <p class="text-center text-lg py-6">
+      {authors && <p class=" font-semibold text-lg"> {authors.map(author => author.name).join(", ")}</p>}
+      {new Date(pubDatetime).toLocaleDateString(locale)}
+    </p>
+    |
+    <p>
+   {readingTime.text.toIndiaDigits().replace("min read", useTranslations(locale)('reading.minutes'))}
+    </p>
+
+  </div>
+
   <main class="grid-container fullwidth">
     <Image
-      class="breakout w-full rounded-md object-cover"
+      class="max-h-[600px] rounded-md object-cover w-full breakout"
       {...post.data.featuredImage}
     />
     <nav class="fullwidth top-16 sticky grid-container bg-background w-full">
@@ -87,6 +87,7 @@ const { Content, headings, remarkPluginFrontmatter } = await post.render();
         }
       </ul>
     </nav>
+
     <article class="prose">
       <Content />
     </article>

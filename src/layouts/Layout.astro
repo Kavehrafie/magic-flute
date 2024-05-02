@@ -65,7 +65,7 @@ const ogImage = new URL(getOgImagePath(Astro.url.pathname), Astro.url.origin)
 
   document.addEventListener("astro:after-swap", () => {
     const isDark = getThemePreference() === "dark";
-    console.log("swamp", isDark);
+
     document.documentElement.classList[isDark ? "add" : "remove"]("dark");
   });
 

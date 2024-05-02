@@ -87,6 +87,9 @@
 }
 
 @layer components {
+    .rehype-figure > img {
+            @apply mx-auto;
+    }
     .grid-container {
         display: grid;
         grid-template-columns:
@@ -114,7 +117,7 @@
 
 
     .prose {
-        @apply max-w-none prose-lg
+        @apply max-w-none prose-lg prose-a:decoration-yellow-400 prose-a:decoration-2 hover:prose-a:decoration-yellow-500 hover:prose-a:text-accent-foreground prose-a:text-foreground
         prose-img:rounded-md prose-figcaption:text-center prose-figcaption:mt-0.5
         prose-blockquote:rtl:pr-10 prose-blockquote:pl-10 prose-blockquote:my-0
         prose-headings:scroll-mt-28 prose-figure:inline-flex prose-figure:flex-wrap prose-figure:items-end prose-figure:gap-4;

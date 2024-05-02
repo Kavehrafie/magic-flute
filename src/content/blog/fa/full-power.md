@@ -1,5 +1,4 @@
 ---
-author: Kaveh Rafie
 pubDatetime: 2022-09-23T15:22:00Z
 title: «تمام قدرت به ضربه مرگبار بر مارس...»
 slug: full-power-to-give-the-fatal-stroke-unto-mars

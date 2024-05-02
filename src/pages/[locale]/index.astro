@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { DEFAULT_LOCALE, useTranslations } from "../../lib/i18n";
 import EventWrapper from "../../components/react/EventWrapper";
+import { getLastEvent } from "../../lib/events";
 
 const { locale = DEFAULT_LOCALE, modal } = Astro.params;
 const podcasts = await getCollection(
@@ -33,6 +34,7 @@ const sortedEvents = events.sort(
 const {  remarkPluginFrontmatter } =
   await sortedEvents[0]?.render() || {};
 
+const latestEvent = await getLastEvent("fa")
 
 const request = Astro.request;
 const url = new URL(request.url);
@@ -173,14 +175,14 @@ const {
   window.addEventListener("scroll", updateOpacityOnScroll);
 
   document.addEventListener("astro:before-preparation", event => {
-    console.log("astro:before-preparation");
+
     scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
     //   window.removeEventListener("scroll", updateOpacityOnScroll);
   });
   // document.addEventListener('astro:page-load', (event) => {
 
   document.addEventListener("astro:after-swap", event => {
-    console.log("astro:after-swap");
+
     window.scrollTo(0, scrollPosition);
     //   window.addEventListener("scroll", updateOpacityOnScroll);
   });

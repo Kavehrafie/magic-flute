@@ -12,7 +12,7 @@
   package = "@netlify/plugin-emails"
 
 [images]
-	remote_images = ["https://d38ruy7cl1ctq5.cloudfront.net/.*"]
+  remote_images = ["https://d38ruy7cl1ctq5.cloudfront.net/.*"]
 
 [functions]
-external_node_modules = ["chrome-aws-lambda"]
+  node_bundler = "esbuild"

@@ -22,7 +22,8 @@ export const ui = {
     'form.event-subscription.email': 'آدرس پست الکترونیکی',
     'form.event-subscription.description': 'برای دریافت متن و لینک جلسه، آدرس پست الکترونیکی خود را وارد کنید',
     'form.event-subscription.action': 'بفرست',
-    'event.invitation.sent': 'موفقیت! اگر ایمیل خود را پیدا نکردید، لطفا این پوشه اسپم خود را مشاهده کنید.'
+    'event.invitation.sent': 'موفقیت! اگر ایمیل خود را پیدا نکردید، لطفا این پوشه اسپم خود را مشاهده کنید.',
+    'reading.minutes': 'دقیقه',
   },
   en: {
     'nav.posts': 'Posts',
@@ -33,7 +34,8 @@ export const ui = {
     'form.event-subscription.email': 'Email',
     'form.event-subscription.description': 'To receive a text and link to the session, enter your email address',
     'form.event-subscription.action': 'Submit',
-    'event.invitation.sent': 'Successfully sent! Check your spam if you do not find in the inbox.'
+    'event.invitation.sent': 'Successfully sent! Check your spam if you do not find in the inbox.',
+    'reading.minutes': 'minutes reading',
   }
 }
 
@@ -61,5 +63,14 @@ export function useTranslations(lang: keyof typeof ui) {
     } catch(error) {
       return ''
     }
+  }
+}
+
+export function useIndiaDigits() {
+  String.prototype.toIndiaDigits= function(){
+    var id= ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return this.replace(/[0-9]/g, function(w){
+      return id[+w]
+    });
   }
 }

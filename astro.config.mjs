@@ -3,9 +3,8 @@ import netlify from "@astrojs/netlify";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
-import rehypeFigure from 'rehype-figure';
+import {rehypeFigure} from './rehype-figure.mjs';
 import react from "@astrojs/react";
-
 
 export default defineConfig({
   site: import.meta.env.SITE || "https://rumination.netlify.app/",

@@ -9,9 +9,6 @@ const handler: Handler = async function(event) {
     };
   }
 
-  console.log("event: ", event.body);
-  
-  
   const requestBody = JSON.parse(event.body) as {
     email: string;
     local: string;
@@ -38,22 +35,6 @@ const handler: Handler = async function(event) {
     }),
   });
 
-  //automatically generated snippet from the email previewimport { sendEmail } from "@netlify/emails";
-
-// await sendEmail({
-//     from: "Rumination <noreply@sandboxa79810dc69fd4bd9a82d78f7df057643.mailgun.org>",
-//     to: requestBody.email,
-//     subject: "Rumination: Upcoming Event Invitation",
-//     template: requestBody.emailTemplate || "events",
-//     parameters: {
-//       eventDate: "",
-//       readingLink: requestBody.links.reading, 
-//       meetingLink: requestBody.links.meeting
-//     },
-//   }).catch((err) =>  ({
-//     statusCode: 500,
-//     body: JSON.stringify(err),
-//   }));
 
   return {
     statusCode: 200,

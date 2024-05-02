@@ -30,9 +30,7 @@ export default function AudioPlayer({ url, className, children }: AudioPlayerPro
   };
 
   const handlePlayPause = () => {
-    console.log(
-      'playing: ' + isPlaying + ' | ' + 'muted: ' + isMuted
-    );
+
     if (isPlaying) {
       handlePause();
     } else {
