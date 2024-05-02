@@ -9,16 +9,14 @@ import { Button } from "@/components/ui/button";
 import {
   PlayCircleIcon,
   VolumeIcon,
-  PauseCircle,
   PauseCircleIcon,
-  VolumeXIcon,
   Volume2Icon,
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@utils/tw.ts";
-import { useStore } from "@nanostores/react";
-import { audioTitle, audioUrl } from "@/store/podcast";
-import { onMount } from "nanostores";
+// import { useStore } from "@nanostores/react";
+// import { audioTitle, audioUrl } from "@/store/podcast";
+// import { onMount } from "nanostores";
 
 interface AudioPlayerProps {
   url: string;
@@ -86,10 +84,6 @@ export default function AudioPlayer({
   useEffect(() => {
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
-    playButtonRef.current.addEventListener("click", () => {
-      handlePlay();
-      handleMute();
-    });
 
     return () => {
       if (!audioRef.current) {
@@ -147,7 +141,16 @@ export default function AudioPlayer({
 
       {loadingStatus}
 
-      <button ref={playButtonRef} className="hidden">
+      <button
+        ref={playButtonRef}
+        className="hidden"
+        onClick={() => {
+          console.log("play by click");
+
+          handlePlay();
+          handleMute();
+        }}
+      >
         <audio
           src={url}
           ref={audioRef}
