@@ -32,7 +32,7 @@ export default function AudioPlayer({
 }: AudioPlayerProps) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -96,7 +96,6 @@ export default function AudioPlayer({
   }, []);
 
   useEffect(() => {
-    audioRef?.current.load(); // iOS prevents autoloader
     handleComplete();
     handlePlay();
   }, [url]);
@@ -139,7 +138,14 @@ export default function AudioPlayer({
         </Button>
       </div>
 
-      <audio src={url} ref={audioRef} />
+      <audio
+        src={url}
+        ref={audioRef}
+        autoPlay
+        playsInline
+        muted
+        onLoadStart={handleMute}
+      />
     </>
   );
 }
