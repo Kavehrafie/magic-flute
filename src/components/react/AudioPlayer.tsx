@@ -150,14 +150,12 @@ export default function AudioPlayer({
         onClick={() => {
           console.log("play by click");
 
-          setAudioUrl(url);
-          audioRef.current.load();
           handlePlay();
           handleMute();
         }}
       >
         <audio
-          src={audioUrl}
+          src={url}
           ref={audioRef}
           autoPlay
           playsInline
