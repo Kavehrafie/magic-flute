@@ -86,7 +86,10 @@ export default function AudioPlayer({
   useEffect(() => {
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
-    playButtonRef.current.addEventListener("click", handlePlay);
+    playButtonRef.current.addEventListener("click", () => {
+      handlePlay();
+      handleMute();
+    });
 
     return () => {
       if (!audioRef.current) {
@@ -99,7 +102,9 @@ export default function AudioPlayer({
 
   useEffect(() => {
     handleComplete();
-    handlePlay();
+    if (url) {
+      playButtonRef.current.click();
+    }
   }, [url]);
 
   return (
@@ -140,23 +145,22 @@ export default function AudioPlayer({
         </Button>
       </div>
 
-      <button ref={playButtonRef} className="hidden">
-        hidden play
-      </button>
       {loadingStatus}
-      <audio
-        src={url}
-        ref={audioRef}
-        autoPlay
-        playsInline
-        muted
-        onLoadStart={() => setLoadingStatus("started")}
-        onCanPlay={() => setLoadingStatus("canplay")}
-        onCanPlayThrough={() => {
-          setLoadingStatus("canplaythrough");
-          handleMute();
-        }}
-      />
+
+      <button ref={playButtonRef} className="hidden">
+        <audio
+          src={url}
+          ref={audioRef}
+          autoPlay
+          playsInline
+          muted
+          onLoadStart={() => setLoadingStatus("started")}
+          onCanPlay={() => setLoadingStatus("canplay")}
+          onCanPlayThrough={() => {
+            setLoadingStatus("canplaythrough");
+          }}
+        />
+      </button>
     </>
   );
 }
