@@ -87,6 +87,11 @@ export default function AudioPlayer({
   useEffect(() => {
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
+    window.addEventListener("touchstart", () => {
+      audioRef.current.muted = false;
+      setIsMuted(false);
+      handlePlay();
+    });
 
     return () => {
       if (!audioRef.current) {
