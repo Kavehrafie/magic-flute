@@ -36,7 +36,7 @@ export default function AudioPlayer({
   const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-
+  const [loadingStatus, setLoadingStatus] = useState("nothing");
   const handlePlay = () => {
     audioRef?.current.play();
     setIsPlaying(true);
@@ -84,9 +84,10 @@ export default function AudioPlayer({
   }
 
   useEffect(() => {
-    playButtonRef.current.click();
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
+    playButtonRef.current.addEventListener("click", handlePlay);
+
     return () => {
       if (!audioRef.current) {
         return;
@@ -139,16 +140,22 @@ export default function AudioPlayer({
         </Button>
       </div>
 
-      <button ref={playButtonRef} className="hidden" onClick={handlePlay}>
+      <button ref={playButtonRef} className="hidden">
         hidden play
       </button>
+      {loadingStatus}
       <audio
         src={url}
         ref={audioRef}
         autoPlay
         playsInline
         muted
-        onLoadStart={handleMute}
+        onLoadStart={() => {
+          setLoadingStatus("started");
+          handleMute();
+        }}
+        onCanPlay={() => setLoadingStatus("canplay")}
+        onCanPlayThrough={() => setLoadingStatus("canplaythrough")}
       />
     </>
   );
