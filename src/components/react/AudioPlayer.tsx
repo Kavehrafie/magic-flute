@@ -147,7 +147,8 @@ export default function AudioPlayer({
         onClick={() => {
           console.log("play by click");
 
-          handlePlay();
+          audioRef?.current.play();
+          setIsPlaying(true);
           handleMute();
         }}
       >
