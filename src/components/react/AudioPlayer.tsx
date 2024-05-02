@@ -150,12 +150,12 @@ export default function AudioPlayer({
         autoPlay
         playsInline
         muted
-        onLoadStart={() => {
-          setLoadingStatus("started");
+        onLoadStart={() => setLoadingStatus("started")}
+        onCanPlay={() => setLoadingStatus("canplay")}
+        onCanPlayThrough={() => {
+          setLoadingStatus("canplaythrough");
           handleMute();
         }}
-        onCanPlay={() => setLoadingStatus("canplay")}
-        onCanPlayThrough={() => setLoadingStatus("canplaythrough")}
       />
     </>
   );
