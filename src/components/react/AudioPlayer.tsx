@@ -31,6 +31,7 @@ export default function AudioPlayer({
   children,
 }: AudioPlayerProps) {
   const audioRef = useRef(null);
+  const playButtonRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
@@ -83,7 +84,7 @@ export default function AudioPlayer({
   }
 
   useEffect(() => {
-    handlePlay();
+    playButtonRef.current.click();
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
     return () => {
@@ -138,6 +139,9 @@ export default function AudioPlayer({
         </Button>
       </div>
 
+      <button ref={playButtonRef} className="hidden" onClick={handlePlay}>
+        hidden play
+      </button>
       <audio
         src={url}
         ref={audioRef}
