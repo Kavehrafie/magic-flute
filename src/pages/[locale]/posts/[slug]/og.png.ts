@@ -7,6 +7,7 @@ import { DEFAULT_LOCALE } from "@/lib/i18n";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { getLocalePosts } from "@/utils/getPosts";
 import { getCollection } from "astro:content";
+import slugify from "@utils/slugify.ts";
 
 export const prerender = true;
 
@@ -16,22 +17,25 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // blog
   const posts = await getCollection("blog", ({ data }) => !data?.draft);
 
-  posts.forEach(post =>
-    result.push({
+  return posts.map(post => {
+    const routeSegments = post.id.split("/");
+    const locale = routeSegments[0];
+
+    return {
       params: {
-        locale: post.data.locale,
-        slug: post.slug,
-        title: post.data.title,
+        slug: slugify(post),
+        locale:
+          post.data?.locale
+            ? locale
+            : DEFAULT_LOCALE,
       },
       props: {
         title: post.data.title,
-        date: post.data.date,
         background: post.data.featuredImage.src,
       },
-    })
-  );
+    };
+  });
 
-  return result;
 };
 
 export const GET: APIRoute = async ({ props, params }) => {
