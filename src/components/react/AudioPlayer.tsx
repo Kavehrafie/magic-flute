@@ -83,7 +83,6 @@ export default function AudioPlayer({
   }
 
   useEffect(() => {
-    audioRef.current.load(); // iOS prevents autoloader
     handlePlay();
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
@@ -97,6 +96,7 @@ export default function AudioPlayer({
   }, []);
 
   useEffect(() => {
+    audioRef?.current.load(); // iOS prevents autoloader
     handleComplete();
     handlePlay();
   }, [url]);
