@@ -146,7 +146,7 @@ export default function AudioPlayer({
         className="hidden"
         onClick={() => {
           console.log("play by click");
-
+          audioRef.current.load();
           handlePlay();
           handleMute();
         }}
