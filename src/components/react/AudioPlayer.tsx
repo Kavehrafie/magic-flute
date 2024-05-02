@@ -1,6 +1,19 @@
-import { type ChangeEvent, type ReactNode, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button"
-import { PlayCircleIcon, VolumeIcon, PauseCircle, PauseCircleIcon, VolumeXIcon, Volume2Icon } from "lucide-react";
+import {
+  type ChangeEvent,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Button } from "@/components/ui/button";
+import {
+  PlayCircleIcon,
+  VolumeIcon,
+  PauseCircle,
+  PauseCircleIcon,
+  VolumeXIcon,
+  Volume2Icon,
+} from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@utils/tw.ts";
 import { useStore } from "@nanostores/react";
@@ -8,11 +21,15 @@ import { audioTitle, audioUrl } from "@/store/podcast";
 import { onMount } from "nanostores";
 
 interface AudioPlayerProps {
-  url: string
-  className?: string
-  children?: ReactNode
+  url: string;
+  className?: string;
+  children?: ReactNode;
 }
-export default function AudioPlayer({ url, className, children }: AudioPlayerProps) {
+export default function AudioPlayer({
+  url,
+  className,
+  children,
+}: AudioPlayerProps) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -30,7 +47,6 @@ export default function AudioPlayer({ url, className, children }: AudioPlayerPro
   };
 
   const handlePlayPause = () => {
-
     if (isPlaying) {
       handlePause();
     } else {
@@ -56,38 +72,43 @@ export default function AudioPlayer({ url, className, children }: AudioPlayerPro
   }
 
   function handleMute() {
-      audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+    audioRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
   }
 
   function handleComplete() {
-
     setIsPlaying(false);
     audioRef.current.currentTime = 0;
-    setCurrentTime(0)
+    setCurrentTime(0);
   }
 
   useEffect(() => {
-    handlePlay()
+    handlePlay();
+    audioRef.current.load(); // iOS prevents autoloader
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
     return () => {
-      if (!audioRef.current) { return; }
+      if (!audioRef.current) {
+        return;
+      }
       audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
       audioRef.current.removeEventListener("ended", handleComplete);
     };
-  }, [])
-
+  }, []);
 
   useEffect(() => {
-    handleComplete()
-    handlePlay()
-  }, [url])
+    handleComplete();
+    handlePlay();
+  }, [url]);
 
   return (
-
     <>
-      <div className={cn("flex items-center flex-wrap justify-between bg-background p-4 gap-x-4 rounded-xl border border-foreground p-4", className)}>
+      <div
+        className={cn(
+          "flex flex-wrap items-center justify-between gap-x-4 rounded-xl border border-foreground bg-background p-4 p-4",
+          className
+        )}
+      >
         {children}
         <Button size="icon" variant="ghost" onClick={handlePlayPause}>
           {isPlaying ? (
@@ -98,13 +119,14 @@ export default function AudioPlayer({ url, className, children }: AudioPlayerPro
 
           <span className="sr-only">Play/Pause</span>
         </Button>
-        <div className="flex-1 justify-center flex items-center">
+        <div className="flex flex-1 items-center justify-center">
           {formatDuration(duration)} | {formatDuration(currentTime)}
-          <Slider value={[currentTime || 0]}
-                  max={duration}
-                  step={1}
-                  className="max-w-lg mx-auto"
-                  onValueChange={handleSeek}
+          <Slider
+            value={[currentTime || 0]}
+            max={duration}
+            step={1}
+            className="mx-auto max-w-lg"
+            onValueChange={handleSeek}
           />
         </div>
 
@@ -117,11 +139,7 @@ export default function AudioPlayer({ url, className, children }: AudioPlayerPro
         </Button>
       </div>
 
-      <audio
-        src={url}
-        ref={audioRef}
-      />
+      <audio src={url} ref={audioRef} />
     </>
-
   );
 }
