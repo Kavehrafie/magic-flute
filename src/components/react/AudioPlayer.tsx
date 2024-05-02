@@ -139,7 +139,7 @@ export default function AudioPlayer({
         </Button>
       </div>
 
-      {/* {loadingStatus} */}
+      {loadingStatus}
 
       <button
         ref={playButtonRef}
