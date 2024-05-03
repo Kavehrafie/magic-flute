@@ -19,6 +19,7 @@ import { cn } from "@utils/tw.ts";
 import { useStore } from "@nanostores/react";
 import { audioTitle, audioUrl } from "@/store/podcast";
 import { onMount } from "nanostores";
+import { Dialog } from "@radix-ui/react-dialog";
 
 interface AudioPlayerProps {
   url: string;
@@ -87,6 +88,17 @@ export default function AudioPlayer({
   useEffect(() => {
     if (!isIOS) {
       handlePlay();
+    } else {
+      const userConfirmed = confirm(
+        "IOS does not support autoplay. Do you want to continue?"
+      );
+      if (userConfirmed) {
+        // Execute the desired action
+        handlePlay();
+      } else {
+        audioRef.current.load();
+        // Handle the cancellation
+      }
     }
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
@@ -101,7 +113,6 @@ export default function AudioPlayer({
 
   useEffect(() => {
     handleComplete();
-    handlePlay();
   }, [url]);
 
   return (
