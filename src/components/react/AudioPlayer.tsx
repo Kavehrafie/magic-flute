@@ -17,7 +17,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@utils/tw.ts";
 import { useStore } from "@nanostores/react";
-import { audioTitle, audioUrl } from "@/store/podcast";
+import { audioTitle, audioUrl, isPodcastPlay } from "@/store/podcast";
 import { onMount } from "nanostores";
 import { Dialog } from "@radix-ui/react-dialog";
 
@@ -88,10 +88,6 @@ export default function AudioPlayer({
     setCurrentTime(0);
   }
 
-  function handleIOSPlay() {
-    new Audio(url).play().catch(err => console.log(err));
-  }
-
   useEffect(() => {
     if (!isIOS) {
       handlePlay();
@@ -113,13 +109,12 @@ export default function AudioPlayer({
 
   return (
     <>
-      {isIOS && !isPlaying ? (
+      {isIOS ? (
         <div className="flex flex-col items-center justify-between rounded border border-foreground bg-background p-4">
-          <p className="py-4">
-            IOS does not allow the audio to be autoplayed. Click the button
-            below to play.
+          <p className="py-4" dir="ltr">
+            Sorry! Your IOS does not allow the audio to be autoplayed.
           </p>
-          <Button onClick={handleIOSPlay}>Play Audio</Button>
+          <Button onClick={() => isPodcastPlay.set(false)}>Close</Button>
         </div>
       ) : (
         <div
