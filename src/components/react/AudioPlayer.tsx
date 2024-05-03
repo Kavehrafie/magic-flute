@@ -88,17 +88,6 @@ export default function AudioPlayer({
   useEffect(() => {
     if (!isIOS) {
       handlePlay();
-    } else {
-      const userConfirmed = confirm(
-        "IOS does not support autoplay. Do you want to continue?"
-      );
-      if (userConfirmed) {
-        // Execute the desired action
-        handlePlay();
-      } else {
-        audioRef.current.load();
-        // Handle the cancellation
-      }
     }
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
@@ -117,42 +106,51 @@ export default function AudioPlayer({
 
   return (
     <>
-      <div
-        className={cn(
-          "flex flex-wrap items-center justify-between gap-x-4 rounded-xl border border-foreground bg-background p-4 p-4",
-          className
-        )}
-      >
-        {children}
-        <Button size="icon" variant="ghost" onClick={handlePlayPause}>
-          {isPlaying ? (
-            <PauseCircleIcon className="h-6 w-6" />
-          ) : (
-            <PlayCircleIcon className="h-6 w-6" />
-          )}
-
-          <span className="sr-only">Play/Pause</span>
-        </Button>
-        <div className="flex flex-1 items-center justify-center">
-          {formatDuration(duration)} | {formatDuration(currentTime)}
-          <Slider
-            value={[currentTime || 0]}
-            max={duration}
-            step={1}
-            className="mx-auto max-w-lg"
-            onValueChange={handleSeek}
-          />
+      {isIOS && !isPlaying ? (
+        <div className="flex flex-col items-center justify-between rounded border border-foreground bg-background p-4">
+          <p className="py-4">
+            IOS does not allow the audio to be autoplayed. Click the button
+            below to play.
+          </p>
+          <Button onClick={handlePlay}>Play Audio</Button>
         </div>
-
-        <Button size="icon" variant="ghost" onClick={handleMute}>
-          {isMuted ? (
-            <VolumeIcon className="h-6 w-6" />
-          ) : (
-            <Volume2Icon className="h-6 w-6" />
+      ) : (
+        <div
+          className={cn(
+            "flex flex-wrap items-center justify-between gap-x-4 rounded-xl border border-foreground bg-background p-4 p-4",
+            className
           )}
-        </Button>
-      </div>
+        >
+          {children}
+          <Button size="icon" variant="ghost" onClick={handlePlayPause}>
+            {isPlaying ? (
+              <PauseCircleIcon className="h-6 w-6" />
+            ) : (
+              <PlayCircleIcon className="h-6 w-6" />
+            )}
 
+            <span className="sr-only">Play/Pause</span>
+          </Button>
+          <div className="flex flex-1 items-center justify-center">
+            {formatDuration(duration)} | {formatDuration(currentTime)}
+            <Slider
+              value={[currentTime || 0]}
+              max={duration}
+              step={1}
+              className="mx-auto max-w-lg"
+              onValueChange={handleSeek}
+            />
+          </div>
+
+          <Button size="icon" variant="ghost" onClick={handleMute}>
+            {isMuted ? (
+              <VolumeIcon className="h-6 w-6" />
+            ) : (
+              <Volume2Icon className="h-6 w-6" />
+            )}
+          </Button>
+        </div>
+      )}
       <audio src={url} ref={audioRef} />
     </>
   );
