@@ -88,6 +88,10 @@ export default function AudioPlayer({
     setCurrentTime(0);
   }
 
+  function handleIOSPlay() {
+    new Audio(url).play().catch(err => console.log(err));
+  }
+
   useEffect(() => {
     if (!isIOS) {
       handlePlay();
@@ -115,7 +119,7 @@ export default function AudioPlayer({
             IOS does not allow the audio to be autoplayed. Click the button
             below to play.
           </p>
-          <Button onClick={handlePlay}>Play Audio</Button>
+          <Button onClick={handleIOSPlay}>Play Audio</Button>
         </div>
       ) : (
         <div
