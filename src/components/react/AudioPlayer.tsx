@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button";
 import {
   PlayCircleIcon,
   VolumeIcon,
+  PauseCircle,
   PauseCircleIcon,
+  VolumeXIcon,
   Volume2Icon,
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@utils/tw.ts";
-// import { useStore } from "@nanostores/react";
-// import { audioTitle, audioUrl } from "@/store/podcast";
-// import { onMount } from "nanostores";
+import { useStore } from "@nanostores/react";
+import { audioTitle, audioUrl } from "@/store/podcast";
+import { onMount } from "nanostores";
 
 interface AudioPlayerProps {
   url: string;
@@ -29,15 +31,11 @@ export default function AudioPlayer({
   children,
 }: AudioPlayerProps) {
   const audioRef = useRef(null);
-  const playButtonRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [loadingStatus, setLoadingStatus] = useState("nothing");
-  const [audioUrl, setAudioUrl] = useState(
-    "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-  );
+
   const handlePlay = () => {
     audioRef?.current.play();
     setIsPlaying(true);
@@ -85,14 +83,10 @@ export default function AudioPlayer({
   }
 
   useEffect(() => {
+    handlePlay();
+    audioRef.current.load(); // iOS prevents autoloader
     audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     audioRef.current.addEventListener("ended", handleComplete);
-    window.addEventListener("touchstart", () => {
-      audioRef.current.muted = false;
-      setIsMuted(false);
-      handlePlay();
-    });
-
     return () => {
       if (!audioRef.current) {
         return;
@@ -104,9 +98,7 @@ export default function AudioPlayer({
 
   useEffect(() => {
     handleComplete();
-    if (url) {
-      playButtonRef.current.click();
-    }
+    handlePlay();
   }, [url]);
 
   return (
@@ -147,31 +139,7 @@ export default function AudioPlayer({
         </Button>
       </div>
 
-      {loadingStatus}
-
-      <button
-        ref={playButtonRef}
-        className="hidden"
-        onClick={() => {
-          console.log("play by click");
-
-          handlePlay();
-          handleMute();
-        }}
-      >
-        <audio
-          src={url}
-          ref={audioRef}
-          autoPlay
-          playsInline
-          muted
-          onLoadStart={() => setLoadingStatus("started")}
-          onCanPlay={() => setLoadingStatus("canplay")}
-          onCanPlayThrough={() => {
-            setLoadingStatus("canplaythrough");
-          }}
-        />
-      </button>
+      <audio src={url} ref={audioRef} />
     </>
   );
 }
