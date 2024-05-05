@@ -114,7 +114,7 @@ const ogImage = new URL(getOgImagePath(Astro.url.pathname), Astro.url.origin)
 <Header {...{locale, showProgressBar}} />
 <slot name="featured" />
 <slot />
-<div class="breakout sticky bottom-5 py-6">
+<div class="breakout sticky bottom-1 py-6">
   <AudioWrapper client:load transition:persist></AudioWrapper>
 </div>
 <Footer />

@@ -70,7 +70,7 @@ const {
 
     <section
       id="hero-section"
-      class="z-[1] col-span-2 col-start-1 row-start-1 p-4 md:col-span-1 md:col-start-2 md:p-0 rtl:font-fa-serif"
+      class="col-span-2 col-start-1 row-start-1 p-4 md:col-span-1 md:col-start-2 md:p-0 rtl:font-fa-serif"
     >
       {
         sortedEvents[0] &&
@@ -194,23 +194,23 @@ const {
 
 <style>
   .cast-card {
-    @apply m-2 grid items-center gap-2 overflow-hidden rounded-2xl border lg:gap-4 rtl:flex-row-reverse;
+    @apply m-2 grid max-h-96 items-center gap-2 overflow-hidden rounded-2xl border lg:gap-4 rtl:flex-row-reverse;
     grid-template-areas:
       "image image"
       "title title"
       "desc desc";
-    max-height: 500px;
     @screen md {
       grid-template-areas:
         "title image"
         "desc image";
-      grid-template-rows: auto 1fr;
+      grid-template-rows: 1fr 10em;
       grid-template-columns: 1fr minmax(300px, 400px);
+      
     }
   }
 
   .cast-card--description {
-    @apply px-4 py-6 mb-auto mt-0;
+    @apply px-4 py-6 mb-auto mt-0 line-clamp-2;
     grid-area: desc;
   }
 

@@ -1,5 +1,5 @@
-import { atom } from 'nanostores';
+import { atom } from "nanostores";
 
-export const audioUrl = atom('');
-export const audioTitle = atom('')
-export const isPodcastPlay: boolean = atom(false)
+export const audioUrl = atom("");
+export const audioTitle = atom("");
+export const isPodcastPlay: boolean = atom(false);
