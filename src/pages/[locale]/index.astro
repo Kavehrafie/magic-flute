@@ -194,18 +194,18 @@ const {
 
 <style>
   .cast-card {
-    @apply m-2 grid max-h-96 items-center gap-2 overflow-hidden rounded-2xl border lg:gap-4 rtl:flex-row-reverse;
+    @apply m-2 grid md:max-h-96 items-center gap-2 overflow-hidden rounded-2xl border lg:gap-4 rtl:flex-row-reverse;
     grid-template-areas:
       "image image"
       "title title"
       "desc desc";
+    grid-template-rows: 1fr auto 12em;
     @screen md {
       grid-template-areas:
         "title image"
         "desc image";
-      grid-template-rows: 1fr 10em;
-      grid-template-columns: 1fr minmax(300px, 400px);
-      
+      grid-template-rows: 1fr 12em;
+      grid-template-columns: 1fr minmax(300px, 400px); 
     }
   }
 
