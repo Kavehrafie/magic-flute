@@ -112,7 +112,7 @@ export default function WavesurferPlayer({
 }) {
   const containerRef = useRef();
   const hoverRef = useRef();
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState(1);
   const { gradient, progressGradient } = useMemo(() => makeGradient(), []);
   const { wavesurfer, isReady, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
@@ -126,6 +126,11 @@ export default function WavesurferPlayer({
   };
 
   useEffect(() => {
+    if (wavesurfer) {
+      setVolume(wavesurfer.getVolume());
+    }
+  }, [wavesurfer]);
+  useEffect(() => {
     if (isReady) {
       wavesurfer.on("interaction", () => {
         wavesurfer?.play();
@@ -135,7 +140,6 @@ export default function WavesurferPlayer({
         e => (hoverRef.current.style.width = `${e.offsetX}px`)
       );
     }
-    setVolume(wavesurfer?.getVolume());
   }, [isReady]);
 
   return (
@@ -187,10 +191,10 @@ export default function WavesurferPlayer({
           id="hover"
           className="absolute left-0 z-[1]  h-full bg-gradient-to-r from-foreground/5 to-foreground/15 opacity-0 transition-opacity  group-hover:opacity-100"
         ></div>
-        <div className="absolute -top-6 left-0 z-[3] hidden h-full text-xs group-hover:block">
+        <div className="absolute -top-5 left-0 z-[3] hidden h-full text-xs group-hover:block">
           {formatTime(currentTime)}
         </div>
-        <div className="absolute -top-6 right-0 z-[3] hidden h-full text-xs group-hover:block">
+        <div className="absolute -top-5 right-0 z-[3] hidden h-full text-xs group-hover:block">
           {formatTime(wavesurfer?.getDuration())}
         </div>
       </div>
