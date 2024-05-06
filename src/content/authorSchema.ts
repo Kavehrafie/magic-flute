@@ -7,6 +7,7 @@ const authorSchema = ({ image }) =>
     locale: z.string().regex(/^[a-z]{2}$/),
     fistName: z.string().min(3),
     lastName: z.string().min(3),
+    bio: z.string().optional(),
     tags: z.array(z.string()).default(["others"]),
   })
 

@@ -143,7 +143,11 @@ export default function WavesurferPlayer({
   }, [isReady]);
 
   return (
-    <div className="grid grid-cols-[100px_1fr_100px] grid-rows-[30px_1fr] items-center justify-between gap-2 rounded-xl border border-foreground bg-background p-4">
+    <div
+      className="grid 
+    grid-cols-[50px_1fr_50px] grid-rows-[30px_1fr]
+    items-center justify-between gap-2 rounded-xl border border-foreground bg-background p-4 md:grid-cols-[100px_1fr_100px] md:grid-rows-[30px_1fr]"
+    >
       <Button
         className="col-start-1 row-start-1"
         variant="ghost"

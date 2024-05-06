@@ -23,13 +23,12 @@ export async function getStaticPaths() {
     const routeSegments = post.id.split("/");
     const locale = routeSegments[0];
 
+    console.log(locale);
+    
     return {
       params: {
         slug: slugify(post),
-        locale:
-          post.data?.locale && locales.includes(locale)
-            ? locale
-            : DEFAULT_LOCALE,
+        locale: locale
       },
       props: { post },
     };
@@ -40,12 +39,12 @@ useIndiaDigits()
 
 const { locale } = Astro.params;
 const { post } = Astro.props;
-const { Content, headings, remarkPluginFrontmatter: { readingTime, pubDatetime } } = await post.render();
+const { Content, headings, remarkPluginFrontmatter: { readingTime, pubDate } } = await post.render();
 
-const authors = await Promise.all(post.data.authors?.map(async author => {
+const authors = post.data?.authors ? await Promise.all(post.data?.authors?.map(async author => {
   const {data: {firstName, lastName, slug}} = await getEntryBySlug(author.collection, author.slug);
   return {slug, name: `${firstName} ${lastName}`}
-}));
+})) : []
 
 ---
 
@@ -60,7 +59,7 @@ const authors = await Promise.all(post.data.authors?.map(async author => {
   <div class="p-2 flex items-center justify-center gap-4 text-sm text-right w-full">
     <p class="text-center text-lg py-6">
       {authors && <p class=" font-semibold text-lg"> {authors.map(author => author.name).join(", ")}</p>}
-      {new Date(pubDatetime).toLocaleDateString(locale)}
+      {new Date(pubDate).toLocaleDateString(locale)}
     </p>
     |
     <p>

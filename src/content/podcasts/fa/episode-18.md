@@ -1,5 +1,5 @@
 ---
-pubDatetime: 2022-09-23T15:22:00Z
+pubDate: 2022-09-23T15:22:00Z
 title: "رشدزدایی نشست اول : جیسون هیکل و سیاست ضداستعماری رشدزدایی"
 slug: degrowth-jason-hickel
 featuredImage:

@@ -3,16 +3,17 @@ import { SITE } from "@config";
 
 const blogSchema = ({ image }) =>
   z.object({
-    featuredImage: z.object({
-      src: image().or(z.string()),
-      alt: z.string(),
-      width: z.number(),
-      height: z.number()
-    }).optional(),
+    title: z.string().min(10).max(200),
+    featuredImage: z
+      .object({
+        src: image().or(z.string()),
+        alt: z.string(),
+        width: z.number(),
+        height: z.number(),
+      })
+      .optional(),
     authors: z.array(reference("authors")).optional(),
-    locale: z.string().regex(/^[a-z]{2}$/),
-    pubDatetime: z.date(),
-    title: z.string(),
+    pubDate: z.date(),
     subtitle: z.string().optional(),
     featured: z.boolean().optional(),
     draft: z.boolean().optional(),
@@ -23,10 +24,11 @@ const blogSchema = ({ image }) =>
       })
       .or(z.string())
       .optional(),
-    description: z.string(),
+    description: z.string().optional(),
     canonicalURL: z.string().optional(),
     readingTime: z.object({ text: z.string() }).optional(),
-    translations: z.array(reference('blog')).optional()
+    translations: z.array(reference("blog")).optional(),
+    type: z.enum(["default", "author"]).default("default"),
   });
 
-export default blogSchema
+export default blogSchema;

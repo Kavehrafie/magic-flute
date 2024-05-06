@@ -5,27 +5,27 @@
   "frontMatter.content.publicFolder": "public",
   "frontMatter.content.pageFolders": [
     {
-      "title": "blog",
-      "path": "[[workspace]]/src/content/blog"
+      "title": "blog/fa",
+      "path": "[[workspace]]/src/content/blog/fa"
     },
     {
-      "title": "authors",
-      "path": "[[workspace]]/src/content/authors"
+      "title": "authors/fa",
+      "path": "[[workspace]]/src/content/authors/fa"
     },
     {
-      "title": "events",
-      "path": "[[workspace]]/src/content/events"
+      "title": "events/fa",
+      "path": "[[workspace]]/src/content/events/fa"
     },
     {
-      "title": "podcasts",
-      "path": "[[workspace]]/src/content/podcasts"
+      "title": "podcasts/fa",
+      "path": "[[workspace]]/src/content/podcasts/fa"
     }
   ],
   "frontMatter.taxonomy.contentTypes": [
     {
       "name": "default",
       "pageBundle": false,
-      "previewPath": "'blog'",
+      "previewPath": "'blog/fa'",
       "filePrefix": null,
       "clearEmpty": true,
       "fields": [
@@ -33,12 +33,14 @@
           "title": "Title",
           "name": "title",
           "type": "string",
+          "required": true,
           "single": true
         },
         {
           "title": "Description",
           "name": "description",
-          "type": "string"
+          "type": "string",
+          "wysiwyg": true
         },
         {
           "title": "Publishing date",
@@ -48,10 +50,80 @@
           "isPublishDate": true
         },
         {
-          "title": "Content preview",
-          "name": "heroImage",
-          "type": "image",
-          "isPreviewImage": true
+          "title": "Authors",
+          "name": "authors",
+          "type": "contentRelationship",
+          "multiple": true,
+          "contentTypeName": "authors",
+          "contentTypeValue": "slug",
+          "required": true
+
+        },
+        {
+          "title": "Last modified date",
+          "name": "lastModified",
+          "type": "datetime",
+          "isModifiedDate": true
+        },
+        {
+          "title": "Featured media",
+          "name": "featured",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "Source Url",
+              "name": "src",
+              "type": "string"
+            },
+            {
+              "title": "Alt Text",
+              "name": "alt",
+              "type": "string"
+            },
+            {
+               "title": "Width",
+               "name": "width",
+               "type": "number"
+            },
+            {
+               "title": "Height", 
+               "name": "height",
+               "type": "number"
+            }
+
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authors",
+      "pageBundle": false,
+      "previewPath": "'authors'",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Firstname",
+          "name": "firstName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Lastname",
+          "name": "lastName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Avatar",
+          "name": "avatar",
+          "type": "image"
+        },
+        {
+          "title": "Bio",
+          "name": "bio",
+          "type": "string",
+          "wysiwyg": true
         }
       ]
     }

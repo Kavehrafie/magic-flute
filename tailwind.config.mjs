@@ -75,5 +75,5 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate"), require("@tailwindcss/line-clamp")],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
 };
