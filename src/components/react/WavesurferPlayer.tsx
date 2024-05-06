@@ -171,7 +171,7 @@ export default function WavesurferPlayer({
 
       <h2
         className={cn(
-          "col-start-2 row-start-1 text-lg text-muted-foreground transition-transform",
+          "col-start-2 row-start-1 truncate text-sm text-muted-foreground transition-transform lg:text-lg",
           { "scale-95 text-center": isReady }
         )}
       >
