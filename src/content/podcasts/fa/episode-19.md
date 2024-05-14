@@ -1,5 +1,5 @@
 ---
-pubDate: 2022-09-23T15:22:00Z
+pubDate: 2024-06-3T15:22:00Z
 title: "رشدزدایی نشست دوم : اقتصاد دوناتی و «زدایی» در رشدزدایی"
 slug: degrowth-session-2
 featuredImage:
